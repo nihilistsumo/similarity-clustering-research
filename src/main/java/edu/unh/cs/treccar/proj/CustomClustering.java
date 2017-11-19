@@ -19,9 +19,42 @@ public class CustomClustering {
 		this.pr = prop;
 	}
 	
+	private int getParent(int i, int[] parents){
+		while(parents[i]!=i)
+			i = parents[i];
+		return i;
+	}
+	
 	private double mergeScore(ArrayList<ArrayList<String>> clusters, ArrayList<String> paraids, int[] parents){
 		double score = 0;
-		
+		String p1,p2;
+		int pos = 0, count = 0;
+		for(int i=0; i<paraids.size()-1; i++){
+			p1 = paraids.get(i);
+			for(int j=i+1; j<paraids.size(); j++){
+				p2 = paraids.get(j);
+				if(this.getParent(i, parents)==this.getParent(j, parents)){
+					for(ArrayList<String> cluster:clusters){
+						if(cluster.contains(p1)){
+							if(cluster.contains(p2))
+								pos++;
+							break;
+						}
+					}
+				}
+				else{
+					for(ArrayList<String> cluster:clusters){
+						if(cluster.contains(p1)){
+							if(!cluster.contains(p2))
+								pos++;
+							break;
+						}
+					}
+				}
+				count++;
+			}
+		}
+		score = (double)pos/(double)count;
 		return score;
 	}
 	

@@ -21,7 +21,8 @@ public class ProjectMain {
 			InputStream is = new FileInputStream(ProjectMain.PROPERTIES);
 			prop.load(is);
 			ProjectWorker worker = new ProjectWorker(prop);
-			worker.processParaPairData();
+			//worker.processParaPairData();
+			worker.runClustering();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

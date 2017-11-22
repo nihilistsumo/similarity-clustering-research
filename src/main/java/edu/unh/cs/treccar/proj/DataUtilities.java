@@ -27,7 +27,7 @@ public class DataUtilities {
 		return paras;
 	}
 	
-	public static HashMap<String, ArrayList<String>> getArticleMapFromPath(String path){
+	public static HashMap<String, ArrayList<String>> getArticleParasMapFromPath(String path){
 		HashMap<String, ArrayList<String>> articleMap = new HashMap<String, ArrayList<String>>();
 		BufferedReader br;
 		try{
@@ -49,6 +49,31 @@ public class DataUtilities {
 			e.printStackTrace();
 		}
 		return articleMap;
+	}
+	
+	public static HashMap<String, ArrayList<String>> getArticleSecMapFromPath(String path){
+		HashMap<String, ArrayList<String>> articleSecMap = new HashMap<String, ArrayList<String>>();
+		BufferedReader br;
+		try{
+			br = new BufferedReader(new FileReader(path));
+			String line, pageid;
+			String[] lineData = new String[4];
+			while((line = br.readLine()) != null){
+				lineData = line.split(" ");
+				pageid = lineData[0].split("/")[0];
+				if(articleSecMap.containsKey(pageid)){
+					articleSecMap.get(pageid).add(lineData[0]);
+				} else{
+					ArrayList<String> secIDList = new ArrayList<String>();
+					secIDList.add(lineData[2]);
+					articleSecMap.put(pageid, secIDList);
+				}	
+			}
+			br.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return articleSecMap;
 	}
 	// Converts arraylist of para objects into their corresponding para id array
 	public static ArrayList<String> getOrderedParaIDArray(ArrayList<Data.Paragraph> paras){

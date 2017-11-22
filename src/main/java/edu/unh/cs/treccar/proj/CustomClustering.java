@@ -13,12 +13,28 @@ public class CustomClustering {
 	
 	public Properties pr;
 	private String pageID;
+	private ClusterResult cr;
 	
 	public CustomClustering(Properties prop, String pageID, 
-			ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras){
+			ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList){
 		this.pr = prop;
+		this.pageID = pageID;
+		try {
+			this.cr = this.cluster(pageID, sectionIDs, paras, ppdList);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	public String getPageID() {
+		return pageID;
+	}
+
+	public ClusterResult getCr() {
+		return cr;
+	}
+
 	private int getParent(int i, int[] parents){
 		while(parents[i]!=i)
 			i = parents[i];
@@ -58,20 +74,17 @@ public class CustomClustering {
 		return score;
 	}
 	
-	private void cluster(String pageID, ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras) throws FileNotFoundException, IOException, ClassNotFoundException{
+	private ClusterResult cluster(String pageID, ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList) throws FileNotFoundException, IOException, ClassNotFoundException{
 		int simCount = Integer.parseInt(this.pr.getProperty("sim-fet-count"));
+		ArrayList<String> paraids = DataUtilities.getOrderedParaIDArray(paras);
 		double[] w = new double[simCount];
 		double[] optW = new double[simCount];
 		double[] best = new double[simCount];
-		ArrayList<String> paraids = DataUtilities.getOrderedParaIDArray(paras);
+		int[][] parentsForSim = new int[simCount][paraids.size()];
 		ArrayList<ArrayList<String>> gtClusters = DataUtilities.getGTClusters(
 				pageID, this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("hier-qrels"));
 		double score = 0, mergeScore = 0;
 		double threshold = Double.parseDouble(this.pr.getProperty("threshold"));
-		ObjectInputStream ois = new ObjectInputStream(
-				new FileInputStream(
-						this.pr.getProperty("out-dir")+"/"+pageID+"data"));
-		ArrayList<ParaPairData> ppd = (ArrayList<ParaPairData>)ois.readObject();
 		for(int i=0; i<simCount; i++){
 			w[i] = 0.0;
 			optW[i] = 0.0;
@@ -83,7 +96,7 @@ public class CustomClustering {
 				int[] parents = new int[paraids.size()];
 				for(int m=0; m<parents.length; m++)
 					parents[m] = m;
-				for(ParaPairData ppData:ppd){
+				for(ParaPairData ppData:ppdList){
 					score = ppData.getSimScoreList().get(i)*w[i];
 					if(score>threshold){
 						//merge them
@@ -97,8 +110,11 @@ public class CustomClustering {
 				if(mergeScore>best[i]){
 					best[i] = mergeScore;
 					optW[i] = w[i];
+					parentsForSim[i] = parents;
 				}
 			}
 		}
+		ClusterResult r = new ClusterResult(optW, pageID, sectionIDs, paras, parentsForSim);
+		return r;
 	}
 }

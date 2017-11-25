@@ -68,7 +68,7 @@ public class WordSemanticSimilarity
 	public static void main(String[] args) 
 	{
 		
-		double s = findSimilarity( "automobile","car","res" );
+		double s = findSimilarity( "There ","During ","hso" );
 		System.out.println( "score="+s );
 	}
 }

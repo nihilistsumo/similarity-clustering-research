@@ -71,12 +71,27 @@ public class ProjectWorker {
 		return randScores;
 	}
 	
+	private ArrayList<Double> computeScores(ParaPair pp, ArrayList<Data.Paragraph> paraList){
+		int size = Integer.parseInt(this.pr.getProperty("sim-fet-count"));
+		ArrayList<Double> scores = new ArrayList<Double>(size);
+		
+		scores.add(new HerstStOngeSimilarity().simScore(pp, paraList));
+		scores.add(new JaroWinklerDistance().simScore(pp, paraList));
+		scores.add(new JiangConrathSimilarity().simScore(pp, paraList));
+		scores.add(new LeacockChodorowSimilarity().simScore(pp, paraList));
+		scores.add(new LeskSimilarity().simScore(pp, paraList));
+		
+		return scores;
+	}
+	
 	public ArrayList<ParaPairData> getParaPairData(ArrayList<Data.Paragraph> paraList){
 		ArrayList<ParaPairData> pairData = new ArrayList<ParaPairData>();
 		for(int i=0; i<paraList.size()-1; i++){
 			for(int j=i+1; j<paraList.size(); j++){
 				ParaPair pp = new ParaPair(paraList.get(i).getParaId(), paraList.get(j).getParaId());
-				ArrayList<Double> scores = this.computeScores(3);
+				//ArrayList<Double> scores = this.computeScores(3);
+				ArrayList<Double> scores = this.computeScores(pp, paraList);
+				System.out.println(scores);
 				ParaPairData ppd = new ParaPairData(pp, scores);
 				pairData.add(ppd);
 			}
@@ -103,8 +118,13 @@ public class ProjectWorker {
 			ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
 			for(String paraID:paraIDs)
 				paras.add(this.parasMap.get(paraID));
+			
+			//Expensive op
 			ArrayList<ParaPairData> data = this.getParaPairData(paras);
+			//
+			
 			allPagesData.put(pageID, data);
+			System.out.println(pageID+" is done");
 			//System.out.println(data.size());
 		}
 		FileOutputStream fos = new FileOutputStream(this.pr.getProperty("out-dir")+"/"+this.pr.getProperty("data-file"));

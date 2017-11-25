@@ -51,6 +51,7 @@ public class JaroWinklerDistance
 	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
 	{
 		double s = 0.0d;
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
 		{
 			for(String w2 : list2)

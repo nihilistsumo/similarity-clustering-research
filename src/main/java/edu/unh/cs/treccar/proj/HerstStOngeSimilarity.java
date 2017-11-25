@@ -2,6 +2,18 @@ package edu.unh.cs.treccar.proj;
 
 import java.util.ArrayList;
 import edu.unh.cs.treccar.Data;
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.cmu.lti.lexical_db.NictWordNet;
+import edu.cmu.lti.ws4j.RelatednessCalculator;
+import edu.cmu.lti.ws4j.impl.HirstStOnge;
+import edu.cmu.lti.ws4j.impl.JiangConrath;
+import edu.cmu.lti.ws4j.impl.LeacockChodorow;
+import edu.cmu.lti.ws4j.impl.Lesk;
+import edu.cmu.lti.ws4j.impl.Lin;
+import edu.cmu.lti.ws4j.impl.Path;
+import edu.cmu.lti.ws4j.impl.Resnik;
+import edu.cmu.lti.ws4j.impl.WuPalmer;
+import edu.cmu.lti.ws4j.util.WS4JConfiguration;
 
 /**
  * This class implements the HerstStOnge Semantic Similarity measure 
@@ -43,6 +55,7 @@ public class HerstStOngeSimilarity implements SimilarityFunction
 	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
 	{
 		double s = 0.0d;
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
 			for(String w2 : list2)
 				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "hso"));

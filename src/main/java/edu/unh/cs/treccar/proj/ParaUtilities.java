@@ -41,7 +41,7 @@ public class ParaUtilities
 	
 	private static ArrayList<String> createListOfWords(String text)
 	{
-		return (new ArrayList<String>(Arrays.asList(text.split(""))));
+		return (new ArrayList<String>(Arrays.asList(text.split(" "))));
 	}
 	/**
 	 * 
@@ -73,7 +73,7 @@ public class ParaUtilities
 	public static ArrayList<String> getParaText2(ParaPair pp, ArrayList<Data.Paragraph> list)
 	{
 		/*Get the paraId of the second paragraph*/
-		paraId2 = pp.getPara1();
+		paraId2 = pp.getPara2();
 		
 		/*Get the paragraph text of second paragraph*/
 		text2 = getParaText(paraId2,list);

@@ -131,7 +131,7 @@ public class ProjectWorker {
 				for(String paraID:paraIDs)
 					paras.add(this.parasMap.get(paraID));
 				ArrayList<ParaPairData> ppdList = pageDataMap.get(pageID);
-				
+			
 				//need to optimize this w for a fixed threshold
 				double[] w = {0.1, 0.05, 0.2};
 				

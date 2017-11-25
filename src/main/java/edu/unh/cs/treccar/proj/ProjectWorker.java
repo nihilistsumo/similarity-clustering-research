@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
+import java.util.Random;
 
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
@@ -56,15 +57,20 @@ public class ProjectWorker {
 		return vocabList;
 	}
 	
+	private ArrayList<Double> computeScores(int size){
+		ArrayList<Double> randScores = new ArrayList<Double>(size);
+		Random r = new Random();
+		for(int i=0; i<size; i++)
+			randScores.add(r.nextDouble());
+		return randScores;
+	}
+	
 	public ArrayList<ParaPairData> getParaPairData(ArrayList<Data.Paragraph> paraList){
 		ArrayList<ParaPairData> pairData = new ArrayList<ParaPairData>();
 		for(int i=0; i<paraList.size()-1; i++){
 			for(int j=i+1; j<paraList.size(); j++){
 				ParaPair pp = new ParaPair(paraList.get(i).getParaId(), paraList.get(j).getParaId());
-				ArrayList<Double> scores = new ArrayList<Double>();
-				scores.add(0.0);
-				scores.add(0.1);
-				scores.add(0.2);
+				ArrayList<Double> scores = this.computeScores(3);
 				ParaPairData ppd = new ParaPairData(pp, scores);
 				pairData.add(ppd);
 			}

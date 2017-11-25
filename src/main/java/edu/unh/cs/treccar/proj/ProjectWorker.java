@@ -23,6 +23,7 @@ public class ProjectWorker {
 	private final HashMap<String, Data.Paragraph> parasMap;
 	private final HashMap<String, ArrayList<String>> pageParasMap;
 	private final HashMap<String, ArrayList<String>> pageSecMap;
+	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	public Properties pr;
 	
 	public HashMap<String, Data.Paragraph> getParasMap() {
@@ -41,6 +42,11 @@ public class ProjectWorker {
 				(prop.getProperty("data-dir")+"/"+prop.getProperty("art-qrels"));
 		this.pageSecMap = DataUtilities.getArticleSecMapFromPath
 				(prop.getProperty("data-dir")+"/"+prop.getProperty("hier-qrels"));
+		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
+		for(String pageID:this.pageParasMap.keySet()){
+			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(
+			pageID, prop.getProperty("data-dir")+"/"+prop.getProperty("hier-qrels")));
+		}
 	}
 	
 	public ArrayList<String> getVocabList(String parafilePath) throws FileNotFoundException{
@@ -79,17 +85,17 @@ public class ProjectWorker {
 	}
 	
 	public void printClusterResult(ClusterResult cr){
-		System.out.println("Page ID: "+cr.getPageID()+"\n");
-		for(int i=0;i<cr.getOptimumWeight().length; i++){
-			System.out.print(cr.getOptimumWeight()[i]+" ");
+		String pageID = cr.getPageID();
+		ArrayList<String> paraids = DataUtilities.getOrderedParaIDArray(cr.getParas());
+		int[] parentLabels = cr.getParents();
+		System.out.println("Page ID: "+pageID+"\n");
+		for(int i=0;i<parentLabels.length; i++){
+			System.out.print(parentLabels[i]+" ");
 		}
-		System.out.println("\nParent matrix:");
-		for(int i=0; i<cr.getParentsForSim().length; i++){
-			for(int j=0; j<cr.getParentsForSim()[0].length; j++){
-				System.out.print(cr.getParentsForSim()[i][j]+" ");
-			}
-			System.out.println();
-		}
+		System.out.println();
+		PerformanceMetrics pm = new PerformanceMetrics();
+		System.out.println("Accuracy: "+pm.getAccuracy(
+				this.gtClusterMap.get(pageID), paraids, parentLabels));
 	}
 	
 	public void processParaPairData() throws IOException{
@@ -125,7 +131,11 @@ public class ProjectWorker {
 				for(String paraID:paraIDs)
 					paras.add(this.parasMap.get(paraID));
 				ArrayList<ParaPairData> ppdList = pageDataMap.get(pageID);
-				CustomClustering cl = new CustomClustering(this.pr, pageID, secIDs, paras, ppdList);
+				
+				//need to optimize this w for a fixed threshold
+				double[] w = {0.1, 0.05, 0.2};
+				
+				CustomClustering cl = new CustomClustering(this.pr, pageID, w, secIDs, paras, ppdList);
 				ClusterResult r = cl.getCr();
 				this.printClusterResult(r);
 			}

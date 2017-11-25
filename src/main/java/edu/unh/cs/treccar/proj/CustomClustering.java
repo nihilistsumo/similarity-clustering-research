@@ -80,6 +80,8 @@ public class CustomClustering {
 		double[] w = new double[simCount];
 		double[] optW = new double[simCount];
 		double[] best = new double[simCount];
+		String para1, para2;
+		int para1index, para2index;
 		int[][] parentsForSim = new int[simCount][paraids.size()];
 		ArrayList<ArrayList<String>> gtClusters = DataUtilities.getGTClusters(
 				pageID, this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("hier-qrels"));
@@ -100,8 +102,12 @@ public class CustomClustering {
 					score = ppData.getSimScoreList().get(i)*w[i];
 					if(score>threshold){
 						//merge them
-						parents[paraids.indexOf(ppData.getParaPair().getPara2())]
-								= parents[paraids.indexOf(ppData.getParaPair().getPara1())];
+						para1 = ppData.getParaPair().getPara1();
+						para2 = ppData.getParaPair().getPara2();
+						para1index = paraids.indexOf(para1);
+						para2index = paraids.indexOf(para2);
+						parents[para2index]
+								= parents[para1index];
 					}
 				}
 				//compare merged clusters with gt

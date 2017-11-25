@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import edu.unh.cs.treccar.Data;
@@ -105,5 +106,12 @@ public class CustomClustering {
 		}
 		ClusterResult r = new ClusterResult(parents, pageID, sectionIDs, paras);
 		return r;
+	}
+	
+	private HashMap<String, ArrayList<String>> getCandSecParaMap(
+			String pageID, ArrayList<String> sectionIDs, ArrayList<ArrayList<String>> paraClusters){
+		HashMap<String, ArrayList<String>> secParaMap = new HashMap<String, ArrayList<String>>();
+		
+		return secParaMap;
 	}
 }

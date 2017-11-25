@@ -117,7 +117,7 @@ public class ProjectWorker {
 		oos.close();
 	}
 	
-	public void runClustering(){
+	public void runClusteringOnTrain(){
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(

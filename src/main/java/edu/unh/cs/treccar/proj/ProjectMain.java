@@ -22,7 +22,7 @@ public class ProjectMain {
 			prop.load(is);
 			ProjectWorker worker = new ProjectWorker(prop);
 			worker.processParaPairData();
-			worker.runClustering();
+			worker.runClusteringOnTrain();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

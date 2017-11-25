@@ -93,9 +93,6 @@ public class ProjectWorker {
 			System.out.print(parentLabels[i]+" ");
 		}
 		System.out.println();
-		PerformanceMetrics pm = new PerformanceMetrics();
-		System.out.println("Accuracy: "+pm.getAccuracy(
-				this.gtClusterMap.get(pageID), paraids, parentLabels));
 	}
 	
 	public void processParaPairData() throws IOException{
@@ -117,7 +114,9 @@ public class ProjectWorker {
 		oos.close();
 	}
 	
-	public void runClusteringOnTrain(){
+	public double runClusteringOnTrain(double[] w){
+		HashMap<String, Double> pageScoreMap = new HashMap<String, Double>();
+		double meanScore = 0;
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(
@@ -131,18 +130,23 @@ public class ProjectWorker {
 				for(String paraID:paraIDs)
 					paras.add(this.parasMap.get(paraID));
 				ArrayList<ParaPairData> ppdList = pageDataMap.get(pageID);
-			
-				//need to optimize this w for a fixed threshold
-				double[] w = {0.1, 0.05, 0.2};
 				
 				CustomClustering cl = new CustomClustering(this.pr, pageID, w, secIDs, paras, ppdList);
 				ClusterResult r = cl.getCr();
 				this.printClusterResult(r);
+				PerformanceMetrics pm = new PerformanceMetrics();
+				double s = pm.getAccuracy(this.gtClusterMap.get(pageID), paraIDs, r.getParents());
+				System.out.println("Accuracy: "+s);
+				pageScoreMap.put(pageID, s);
 			}
 			ois.close();
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		for(String p:pageScoreMap.keySet())
+			meanScore+=pageScoreMap.get(p);
+		meanScore/=pageScoreMap.size();
+		return meanScore;
 	}
 }

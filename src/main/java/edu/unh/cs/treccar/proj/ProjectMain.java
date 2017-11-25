@@ -22,7 +22,12 @@ public class ProjectMain {
 			prop.load(is);
 			ProjectWorker worker = new ProjectWorker(prop);
 			worker.processParaPairData();
-			worker.runClusteringOnTrain();
+			
+			// This w is to be optimized
+			double[] w = {0.1, 0.05, 0.2};
+			double score = worker.runClusteringOnTrain(w);
+			
+			System.out.println("Mean acc: "+score);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

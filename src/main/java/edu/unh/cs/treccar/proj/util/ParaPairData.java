@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;

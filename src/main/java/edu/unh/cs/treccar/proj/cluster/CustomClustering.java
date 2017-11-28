@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.cluster;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.util.DataUtilities;
+import edu.unh.cs.treccar.proj.util.ParaPairData;
 
 public class CustomClustering {
 	

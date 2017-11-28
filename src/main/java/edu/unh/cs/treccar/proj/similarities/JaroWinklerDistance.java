@@ -1,8 +1,11 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.similarities;
 
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.util.ParaPair;
+import edu.unh.cs.treccar.proj.util.ParaUtilities;
 
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 /**

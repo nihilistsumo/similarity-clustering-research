@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.similarities;
 
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;

@@ -1,16 +1,18 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
+
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.util.ParaPair;
+import edu.unh.cs.treccar.proj.util.ParaUtilities;
 
 /**
- * This class implements the Resnik Semantic Similarity measure 
+ * This class implements the LeacockChodorow Semantic Similarity measure 
  * and returns the measure between two paragraphs.
  * @author Shubham Chatterjee
  *
  */
-
-public class ResnikSimilarity implements SimilarityFunction
+public class LeacockChodorowSimilarity implements SimilarityFunction
 {
 	private static ArrayList<String> paraText1;
 	private static ArrayList<String> paraText2;
@@ -20,7 +22,7 @@ public class ResnikSimilarity implements SimilarityFunction
 	/**
 	 * @param pp ParaPair A ParaPair object representing a pair of paragraphs
 	 * @param list ArrayList<Data.Paragraph> Conatins a list of Data.Paragraph objects 
-	 * @return Resnik score between two paragraphs
+	 * @return LeacockChodorow score between two paragraphs
 	 */
 	
 	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
@@ -32,6 +34,7 @@ public class ResnikSimilarity implements SimilarityFunction
 		
 		return score;
 	}
+	
 	/**
 	 * 
 	 * @param list1 ArrayList<String> List of words from first paragraph
@@ -42,9 +45,10 @@ public class ResnikSimilarity implements SimilarityFunction
 	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
 	{
 		double s = 0.0d;
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
 			for(String w2 : list2)
-				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "res"));
+				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "lc"));
 		s = findMeanScore(scores);
 		return s;
 	}
@@ -65,4 +69,3 @@ public class ResnikSimilarity implements SimilarityFunction
 		return mean;
 	}
 }
-

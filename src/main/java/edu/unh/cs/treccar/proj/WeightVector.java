@@ -1,5 +1,7 @@
 package edu.unh.cs.treccar.proj;
 import java.util.*;
+
+import edu.unh.cs.treccar.proj.util.ProjectWorker;
 public class WeightVector
 {
 	

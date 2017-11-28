@@ -1,16 +1,19 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
+
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.util.ParaPair;
+import edu.unh.cs.treccar.proj.util.ParaUtilities;
 
 /**
- * This class implements the Path Semantic Similarity measure 
+ * This class implements the JiangConrath Semantic Similarity measure 
  * and returns the measure between two paragraphs.
  * @author Shubham Chatterjee
  *
  */
 
-public class PathSimilarity implements SimilarityFunction
+public class WuPalmerSimilarity implements SimilarityFunction
 {
 	private static ArrayList<String> paraText1;
 	private static ArrayList<String> paraText2;
@@ -20,9 +23,8 @@ public class PathSimilarity implements SimilarityFunction
 	/**
 	 * @param pp ParaPair A ParaPair object representing a pair of paragraphs
 	 * @param list ArrayList<Data.Paragraph> Conatins a list of Data.Paragraph objects 
-	 * @return Path score between two paragraphs
+	 * @return WuPalmer score between two paragraphs
 	 */
-	
 	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
 	{
 		paraText1 = ParaUtilities.getParaText1(pp, list);
@@ -32,7 +34,6 @@ public class PathSimilarity implements SimilarityFunction
 		
 		return score;
 	}
-	
 	/**
 	 * 
 	 * @param list1 ArrayList<String> List of words from first paragraph
@@ -45,11 +46,10 @@ public class PathSimilarity implements SimilarityFunction
 		double s = 0.0d;
 		for(String w1 : list1)
 			for(String w2 : list2)
-				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "path"));
+				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "wp"));
 		s = findMeanScore(scores);
 		return s;
 	}
-	
 	/**
 	 * 
 	 * @param list ArrayList<Double> List of scores between words of two paragraphs

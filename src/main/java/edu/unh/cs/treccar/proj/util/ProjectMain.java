@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

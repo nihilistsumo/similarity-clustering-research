@@ -1,7 +1,10 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
+
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.util.ParaPair;
+import edu.unh.cs.treccar.proj.util.ParaUtilities;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.cmu.lti.ws4j.RelatednessCalculator;

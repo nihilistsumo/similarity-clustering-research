@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;

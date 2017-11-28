@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj;
+package edu.unh.cs.treccar.proj.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -17,6 +17,13 @@ import java.util.Properties;
 import java.util.Random;
 
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.cluster.ClusterResult;
+import edu.unh.cs.treccar.proj.cluster.CustomClustering;
+import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
+import edu.unh.cs.treccar.proj.similarities.JaroWinklerDistance;
+import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
+import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
+import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class ProjectWorker {

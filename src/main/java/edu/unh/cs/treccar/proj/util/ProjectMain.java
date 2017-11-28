@@ -25,7 +25,7 @@ public class ProjectMain {
 			
 			// This w is to be optimized
 			double[] w = {0.1, 0.05, 0.2, 0.4, 0.15};
-			double score = worker.runClusteringOnTrain(w);
+			double score = worker.runClusteringOnTest(w);
 			
 			System.out.println("Mean acc: "+score);
 		} catch (IOException e) {

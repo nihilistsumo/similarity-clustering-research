@@ -141,7 +141,7 @@ public class ProjectWorker {
 		oos.close();
 	}
 	
-	public double runClusteringOnTrain(double[] w){
+	public double runClusteringOnTest(double[] w){
 		HashMap<String, Double> pageScoreMap = new HashMap<String, Double>();
 		double meanScore = 0;
 		try {
@@ -162,8 +162,10 @@ public class ProjectWorker {
 				ClusterResult r = cl.getCr();
 				this.printClusterResult(r);
 				PerformanceMetrics pm = new PerformanceMetrics();
+				
 				double s = pm.getAccuracy(this.gtClusterMap.get(pageID), paraIDs, r.getParents());
 				System.out.println("Accuracy: "+s);
+				
 				pageScoreMap.put(pageID, s);
 			}
 			ois.close();

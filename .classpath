@@ -22,6 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="ws4j-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Documents/new_research/unh/class_project/trec-car-tools-master/java1.7/src/main/java/ws4j-1.0.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

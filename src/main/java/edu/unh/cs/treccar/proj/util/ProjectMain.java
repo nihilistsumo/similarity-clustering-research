@@ -17,6 +17,7 @@ import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LinSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
+import edu.unh.cs.treccar.proj.train.RankLibFileCreator;
 
 public class ProjectMain {
 	public static final String PROPERTIES = "project.properties";
@@ -30,11 +31,19 @@ public class ProjectMain {
 			
 			ArrayList<SimilarityFunction> simFuncList = new ArrayList<SimilarityFunction>();
 			simFuncList.add(new HerstStOngeSimilarity());
+			simFuncList.add(new HerstStOngeSimilarity());
+			simFuncList.add(new HerstStOngeSimilarity());
+			/*
 			simFuncList.add(new LinSimilarity());
 			simFuncList.add(new JiangConrathSimilarity());
 			simFuncList.add(new LeacockChodorowSimilarity());
 			simFuncList.add(new LeskSimilarity());
+			*/
 			
+			RankLibFileCreator rl = new RankLibFileCreator(prop, simFuncList);
+			rl.printRankLibInputFile();
+			
+			/*
 			ProjectWorker worker = new ProjectWorker(prop, simFuncList);
 			worker.processParaPairData();
 			
@@ -43,6 +52,7 @@ public class ProjectMain {
 			double score = worker.runClusteringOnTest(w);
 			
 			System.out.println("Mean acc: "+score);
+			*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

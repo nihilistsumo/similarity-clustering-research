@@ -64,7 +64,7 @@ public class WeightVector
         	if (fitness == 0) 
         	{
         		double[] arr = convertDoubles(weightVector);
-		    	fitness = ProjectWorker.runClusteringOnTest(arr);
+		    	//fitness = ProjectWorker.runClusteringOnTest(arr);
 		    	System.out.println("fitness="+fitness);
         	}
 

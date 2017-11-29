@@ -31,24 +31,29 @@ public class RankLibFileCreator {
 	}
 	
 	public void printRankLibInputFile(){
-		HashMap<String, ArrayList<String>> pageParaMap = DataUtilities.getArticleParasMapFromPath(this.pr.getProperty("art-qrels"));
-		HashMap<String, Data.Paragraph> allParaIDParaMap = DataUtilities.getParaMapFromPath("parafile");
+		HashMap<String, ArrayList<String>> pageParaMap = DataUtilities.getArticleParasMapFromPath(
+				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("art-qrels"));
+		HashMap<String, Data.Paragraph> allParaIDParaMap = DataUtilities.getParaMapFromPath(
+				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("parafile"));
 		
 		for(String pageID:pageParaMap.keySet()){
-			ArrayList<ArrayList<String>> paraIDClusters = DataUtilities.getGTClusters(pageID, pr.getProperty("hier-qrels"));
+			ArrayList<ArrayList<String>> paraIDClusters = DataUtilities.getGTClusters(pageID, 
+					this.pr.getProperty("data-dir")+"/"+pr.getProperty("hier-qrels"));
 			ArrayList<String> paraIDList = pageParaMap.get(pageID);
 			ArrayList<Data.Paragraph> paraObjList = new ArrayList<Data.Paragraph>();
 			for(String p:paraIDList)
 				paraObjList.add(allParaIDParaMap.get(p));
 			Data.Paragraph qPara, para;
-			ArrayList<Double> scores = new ArrayList<Double>();
-			boolean isRel = false;
-			String relLabel = "", fet = "";
 			for(String qParaID:paraIDList){
 				qPara = allParaIDParaMap.get(qParaID);
 				for(String paraID:paraIDList){
 					if(qParaID.equals(paraID))
 						continue;
+					
+					boolean isRel = false;
+					String relLabel = "", fet = "";
+					ArrayList<Double> scores = new ArrayList<Double>();
+					
 					para = allParaIDParaMap.get(paraID);
 					for(SimilarityFunction f:this.simFunctions)
 						scores.add(f.simScore(new ParaPair(qParaID, paraID), paraObjList));

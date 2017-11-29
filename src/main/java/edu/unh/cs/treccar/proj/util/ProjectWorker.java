@@ -24,6 +24,7 @@ import edu.unh.cs.treccar.proj.similarities.JaroWinklerDistance;
 import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
+import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class ProjectWorker {
@@ -31,6 +32,7 @@ public class ProjectWorker {
 	private final HashMap<String, ArrayList<String>> pageParasMap;
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
+	private final ArrayList<SimilarityFunction> funcList;
 	public Properties pr;
 	
 	public HashMap<String, Data.Paragraph> getParasMap() {
@@ -40,8 +42,12 @@ public class ProjectWorker {
 	public HashMap<String, ArrayList<String>> getPageParasMap() {
 		return pageParasMap;
 	}
+	
+	public ArrayList<SimilarityFunction> getFuncList(){
+		return this.funcList;
+	}
 
-	public ProjectWorker(Properties prop){
+	public ProjectWorker(Properties prop, ArrayList<SimilarityFunction> func){
 		this.pr = prop;
 		this.parasMap = DataUtilities.getParaMapFromPath
 				(prop.getProperty("data-dir")+"/"+prop.getProperty("parafile"));
@@ -54,6 +60,7 @@ public class ProjectWorker {
 			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(
 			pageID, prop.getProperty("data-dir")+"/"+prop.getProperty("hier-qrels")));
 		}
+		this.funcList = func;
 	}
 	
 	public ArrayList<String> getVocabList(String parafilePath) throws FileNotFoundException{
@@ -81,12 +88,17 @@ public class ProjectWorker {
 	private ArrayList<Double> computeScores(ParaPair pp, ArrayList<Data.Paragraph> paraList){
 		int size = Integer.parseInt(this.pr.getProperty("sim-fet-count"));
 		ArrayList<Double> scores = new ArrayList<Double>(size);
-		
+		/*
 		scores.add(new HerstStOngeSimilarity().simScore(pp, paraList));
 		scores.add(new JaroWinklerDistance().simScore(pp, paraList));
 		scores.add(new JiangConrathSimilarity().simScore(pp, paraList));
 		scores.add(new LeacockChodorowSimilarity().simScore(pp, paraList));
 		scores.add(new LeskSimilarity().simScore(pp, paraList));
+		*/
+		
+		for(SimilarityFunction f:this.funcList){
+			scores.add(f.simScore(pp, paraList));
+		}
 		
 		return scores;
 	}

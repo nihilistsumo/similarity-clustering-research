@@ -83,5 +83,12 @@ public class ParaUtilities
 		
 		return paraText2;
 	}
-	
+	public static ArrayList<String> findIntersection(ArrayList<String> list1, ArrayList<String> list2)
+	{
+		ArrayList<String> common = new ArrayList<String>();
+		for(String w : list1)
+			if(list2.contains(w) && !common.contains(w))
+				common.add(w);
+		return common;
+	}
 }

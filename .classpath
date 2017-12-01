@@ -24,5 +24,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/sumanta/Documents/mallet/mallet-2.0.8/dist/mallet.jar"/>
 	<classpathentry kind="lib" path="/home/sumanta/Documents/mallet/mallet-2.0.8/dist/mallet-deps.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Documents/new_research/unh/class_project/trec-car-tools-master/java1.7/src/main/java/ws4j-1.0.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

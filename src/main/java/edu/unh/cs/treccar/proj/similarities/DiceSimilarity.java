@@ -23,7 +23,7 @@ public class DiceSimilarity implements SimilarityFunction
 		paraText1 = ParaUtilities.getParaText1(pp, list);
 		paraText2 = ParaUtilities.getParaText2(pp, list);
 		int c = ParaUtilities.findIntersection(paraText1, paraText2).size();
-		score = (2*c)/(paraText1.size() + paraText2.size());
+		score = (double)(2*c)/(double)(paraText1.size() + paraText2.size());
 		
 		return score;
 	}

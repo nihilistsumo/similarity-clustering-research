@@ -1,5 +1,11 @@
 package edu.unh.cs.treccar.proj.train;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -30,15 +36,17 @@ public class RankLibFileCreator {
 		return false;
 	}
 	
-	public void printRankLibInputFile(){
+	public void printRankLibInputFile() throws IOException{
 		HashMap<String, ArrayList<String>> pageParaMap = DataUtilities.getArticleParasMapFromPath(
-				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("art-qrels"));
+				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-art-qrels"));
 		HashMap<String, Data.Paragraph> allParaIDParaMap = DataUtilities.getParaMapFromPath(
-				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("parafile"));
+				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-parafile"));
+		File ranklibOut = new File(this.pr.getProperty("out-dir")+"/ranklib_input");
+		BufferedWriter bw = new BufferedWriter(new FileWriter(ranklibOut));
 		
 		for(String pageID:pageParaMap.keySet()){
 			ArrayList<ArrayList<String>> paraIDClusters = DataUtilities.getGTClusters(pageID, 
-					this.pr.getProperty("data-dir")+"/"+pr.getProperty("hier-qrels"));
+					this.pr.getProperty("data-dir")+"/"+pr.getProperty("train-hier-qrels"));
 			ArrayList<String> paraIDList = pageParaMap.get(pageID);
 			ArrayList<Data.Paragraph> paraObjList = new ArrayList<Data.Paragraph>();
 			for(String p:paraIDList)
@@ -70,9 +78,11 @@ public class RankLibFileCreator {
 					for(int i=0; i<scores.size(); i++)
 						fet += (i+1)+":"+scores.get(i)+" ";
 					System.out.println(relLabel+"qid:"+qParaID+" "+fet+"# "+paraID);
+					bw.append(relLabel+"qid:"+qParaID+" "+fet+"# "+paraID+"\n");
 				}
 			}
 		}
+		bw.close();
 	}
 
 }

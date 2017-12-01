@@ -10,13 +10,18 @@ import java.util.HashSet;
 import java.util.Properties;
 
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.similarities.CosineSimilarity;
+import edu.unh.cs.treccar.proj.similarities.DiceSimilarity;
 import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
+import edu.unh.cs.treccar.proj.similarities.JaccardSimilarity;
 import edu.unh.cs.treccar.proj.similarities.JaroWinklerDistance;
 import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LinSimilarity;
+import edu.unh.cs.treccar.proj.similarities.ResnikSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
+import edu.unh.cs.treccar.proj.similarities.WuPalmerSimilarity;
 import edu.unh.cs.treccar.proj.train.RankLibFileCreator;
 
 public class ProjectMain {
@@ -30,15 +35,16 @@ public class ProjectMain {
 			prop.load(is);
 			
 			ArrayList<SimilarityFunction> simFuncList = new ArrayList<SimilarityFunction>();
-			simFuncList.add(new HerstStOngeSimilarity());
-			simFuncList.add(new HerstStOngeSimilarity());
-			simFuncList.add(new HerstStOngeSimilarity());
-			/*
-			simFuncList.add(new LinSimilarity());
-			simFuncList.add(new JiangConrathSimilarity());
-			simFuncList.add(new LeacockChodorowSimilarity());
-			simFuncList.add(new LeskSimilarity());
-			*/
+			//simFuncList.add(new CosineSimilarity()); // error
+			simFuncList.add(new DiceSimilarity()); // ok
+			simFuncList.add(new JaccardSimilarity()); // ok
+			//simFuncList.add(new LinSimilarity()); // error
+			simFuncList.add(new JiangConrathSimilarity()); // ok
+			simFuncList.add(new LeacockChodorowSimilarity()); // ok
+			//simFuncList.add(new LeskSimilarity()); // ok, but long time
+			//simFuncList.add(new ResnikSimilarity()); // error
+			//simFuncList.add(new WuPalmerSimilarity()); // error
+			
 			
 			RankLibFileCreator rl = new RankLibFileCreator(prop, simFuncList);
 			rl.printRankLibInputFile();

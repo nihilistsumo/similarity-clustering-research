@@ -63,8 +63,10 @@ public class LeacockChodorowSimilarity implements SimilarityFunction
 	{
 		double total = 0.0d;
 		double mean = 0.0d;
-		for(double i : list )
-			total += i;
+		for(double i : list ){
+			if(i<1000)
+				total += i;
+		}
 		mean = total/list.size();
 		return mean;
 	}

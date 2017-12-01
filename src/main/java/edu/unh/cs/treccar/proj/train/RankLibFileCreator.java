@@ -77,10 +77,11 @@ public class RankLibFileCreator {
 						relLabel = "0 ";
 					for(int i=0; i<scores.size(); i++)
 						fet += (i+1)+":"+scores.get(i)+" ";
-					System.out.println(relLabel+"qid:"+qParaID+" "+fet+"# "+paraID);
+					//System.out.println(relLabel+"qid:"+qParaID+" "+fet+"# "+paraID);
 					bw.append(relLabel+"qid:"+qParaID+" "+fet+"# "+paraID+"\n");
 				}
 			}
+			System.out.println(pageID+" finished");
 		}
 		bw.close();
 	}

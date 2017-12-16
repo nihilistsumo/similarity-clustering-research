@@ -10,7 +10,7 @@ public class GA_main
     public static void main(String[] args)throws IOException
     {
     		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        	// Create and add our weights
+        	// Create and add our weights 
         	Random r = new Random();
 	       	WeightManager.addWeight(r.nextDouble());
 	       	WeightManager.addWeight(r.nextDouble());

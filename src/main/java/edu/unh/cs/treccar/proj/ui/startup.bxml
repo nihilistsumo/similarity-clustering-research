@@ -1,0 +1,70 @@
+<bxmlhandler:BXMLHandler title="BXML Handler" maximized="true"
+                xmlns:bxml="http://pivot.apache.org/bxml"
+                xmlns:bxmlhandler="edu.unh.cs.treccar.proj.ui"
+                xmlns="org.apache.pivot.wtk">
+                <bxml:define>
+                    <ButtonGroup bxml:id="fileBrowserSheetModeGroup"/>
+                </bxml:define>
+
+                <Border styles="{padding:6}">
+                    <BoxPane orientation="vertical" styles="{spacing:6}">
+                    	<BoxPane orientation="horizontal" styles="{spacing:6}">
+	                        <Label text="Select Output folder:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton1" buttonData="Select"/>
+	                        <TextInput bxml:id="input_out" text=""/>
+	
+	                        <Label text="Select train parafile:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton2" buttonData="Select"/>
+	                        <TextInput bxml:id="input_trp" text=""/>
+	                    </BoxPane>
+						<BoxPane orientation="horizontal" styles="{spacing:6}">
+	                        <Label text="Select test parafile:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton3" buttonData="Select"/>
+	                        <TextInput bxml:id="input_tep" text=""/>
+	                        
+	                        <Label text="Select train article qrels:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton4" buttonData="Select"/>
+	                        <TextInput bxml:id="input_traq" text=""/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}">  
+	                        <Label text="Select train hierarchical qrels:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton5" buttonData="Select"/>
+	                        <TextInput bxml:id="input_trhq" text=""/>
+	                        
+	                        <Label text="Select test article qrels:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton6" buttonData="Select"/>
+	                        <TextInput bxml:id="input_teaq" text=""/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}">   
+	                        <Label text="Select test hierarchical qrels:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton7" buttonData="Select"/>
+	                        <TextInput bxml:id="input_tehq" text=""/>
+	                        
+	                        <Label text="Select trained score data file:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton8" buttonData="Select"/>
+	                        <TextInput bxml:id="input_simd" text=""/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}"> 
+	                        <Label text="Threshold value:" styles="{font:{bold:true}}"/>
+	                        <TextInput bxml:id="input_th" text=""/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}">
+	                    	<Label text="Choose similarity functions:" styles="{font:{bold:true}}"/>
+	                    	<Checkbox bxml:id="diceCheck" buttonData="Dice"/>
+	                    	<Checkbox bxml:id="jacCheck" buttonData="Jaccard"/>
+	                    	<Checkbox bxml:id="jiangCheck" buttonData="Jiang"/>
+	                    	<Checkbox bxml:id="leaCheck" buttonData="Leacock"/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}">
+	                    	<bxml:define>
+                            	<ButtonGroup bxml:id="numbers"/>
+                        	</bxml:define>
+                        	<RadioButton bxml:id="onlyCluster" buttonData="Only Cluster" buttonGroup="$numbers"/>
+                        	<RadioButton bxml:id="trainAndCluster" buttonData="Train and Cluster" buttonGroup="$numbers" selected="true"/>
+                        </BoxPane>
+                        <BoxPane orientation="horizontal" styles="{spacing:6}">
+                        	<PushButton bxml:id="start" buttonData="Start"/>
+                        </BoxPane>
+                    </BoxPane>
+                </Border>
+            </bxmlhandler:BXMLHandler>

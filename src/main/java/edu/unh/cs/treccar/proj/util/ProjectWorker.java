@@ -25,6 +25,7 @@ import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
+import edu.unh.cs.treccar.proj.ui.UIDataBinder;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class ProjectWorker {
@@ -33,6 +34,7 @@ public class ProjectWorker {
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	private final ArrayList<SimilarityFunction> funcList;
+	private UIDataBinder uidata;
 	public Properties pr;
 	
 	public HashMap<String, Data.Paragraph> getParasMap() {
@@ -47,20 +49,17 @@ public class ProjectWorker {
 		return this.funcList;
 	}
 
-	public ProjectWorker(Properties prop, ArrayList<SimilarityFunction> func){
-		this.pr = prop;
-		this.parasMap = DataUtilities.getParaMapFromPath
-				(prop.getProperty("data-dir")+"/"+prop.getProperty("parafile"));
-		this.pageParasMap = DataUtilities.getArticleParasMapFromPath
-				(prop.getProperty("data-dir")+"/"+prop.getProperty("art-qrels"));
-		this.pageSecMap = DataUtilities.getArticleSecMapFromPath
-				(prop.getProperty("data-dir")+"/"+prop.getProperty("hier-qrels"));
+	// new
+	public ProjectWorker(UIDataBinder data){
+		this.uidata = data;
+		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
+		this.pageParasMap = DataUtilities.getArticleParasMapFromPath(data.getTrainArtqrels());
+		this.pageSecMap = DataUtilities.getArticleSecMapFromPath(data.getTrainHierqrels());
 		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
 		for(String pageID:this.pageParasMap.keySet()){
-			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(
-			pageID, prop.getProperty("data-dir")+"/"+prop.getProperty("hier-qrels")));
+			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(pageID, data.getTrainHierqrels()));
 		}
-		this.funcList = func;
+		this.funcList = data.getFuncs();
 	}
 	
 	public ArrayList<String> getVocabList(String parafilePath) throws FileNotFoundException{
@@ -85,8 +84,9 @@ public class ProjectWorker {
 		return randScores;
 	}
 	
+	// new
 	private ArrayList<Double> computeScores(ParaPair pp, ArrayList<Data.Paragraph> paraList){
-		int size = Integer.parseInt(this.pr.getProperty("sim-fet-count"));
+		int size = uidata.getFuncs().size();
 		ArrayList<Double> scores = new ArrayList<Double>(size);
 		/*
 		scores.add(new HerstStOngeSimilarity().simScore(pp, paraList));
@@ -103,6 +103,7 @@ public class ProjectWorker {
 		return scores;
 	}
 	
+	// new
 	public ArrayList<ParaPairData> getParaPairData(ArrayList<Data.Paragraph> paraList){
 		ArrayList<ParaPairData> pairData = new ArrayList<ParaPairData>();
 		for(int i=0; i<paraList.size()-1; i++){
@@ -129,10 +130,12 @@ public class ProjectWorker {
 		System.out.println();
 	}
 	
-	public void processParaPairData() throws IOException{
+	// new
+	public HashMap<String, ArrayList<ParaPairData>> processParaPairData(
+			HashMap<String, ArrayList<String>> trainPageParasMap) throws IOException{
 		HashMap<String, ArrayList<ParaPairData>> allPagesData = new HashMap<String, ArrayList<ParaPairData>>();
-		for(String pageID:this.pageParasMap.keySet()){
-			ArrayList<String> paraIDs = this.pageParasMap.get(pageID);
+		for(String pageID:trainPageParasMap.keySet()){
+			ArrayList<String> paraIDs = trainPageParasMap.get(pageID);
 			//ArrayList<String> secIDs = this.pageSecMap.get(pageID);
 			ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
 			for(String paraID:paraIDs)
@@ -146,11 +149,21 @@ public class ProjectWorker {
 			System.out.println(pageID+" is done");
 			//System.out.println(data.size());
 		}
-		FileOutputStream fos = new FileOutputStream(this.pr.getProperty("out-dir")+"/"+this.pr.getProperty("data-file"));
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(allPagesData);
-		fos.close();
-		oos.close();
+		return allPagesData;
+	}
+	
+	// new
+	public void saveParaSimilarityData(HashMap<String, ArrayList<ParaPairData>> allPagesData, String filePath){
+		try {
+			FileOutputStream fos = new FileOutputStream(filePath);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(allPagesData);
+			fos.close();
+			oos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public double runClusteringOnTest(double[] w){

@@ -63,6 +63,9 @@
                         	<RadioButton bxml:id="trainAndCluster" buttonData="Train and Cluster" buttonGroup="$numbers" selected="true"/>
                         </BoxPane>
                         <BoxPane orientation="horizontal" styles="{spacing:6}">
+                        	<Border styles="{padding:2}">
+            					<ActivityIndicator bxml:id="activityIndicator"/>
+        					</Border>
                         	<PushButton bxml:id="start" buttonData="Start"/>
                         </BoxPane>
                     </BoxPane>

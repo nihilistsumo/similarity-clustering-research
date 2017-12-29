@@ -18,18 +18,18 @@
 	                        <TextInput bxml:id="input_trp" text=""/>
 	                    </BoxPane>
 						<BoxPane orientation="horizontal" styles="{spacing:6}">
-	                        <Label text="Select test parafile:" styles="{font:{bold:true}}"/>
+							<Label text="Select train article qrels:" styles="{font:{bold:true}}"/>
 	                        <PushButton bxml:id="openSheetButton3" buttonData="Select"/>
-	                        <TextInput bxml:id="input_tep" text=""/>
-	                        
-	                        <Label text="Select train article qrels:" styles="{font:{bold:true}}"/>
-	                        <PushButton bxml:id="openSheetButton4" buttonData="Select"/>
 	                        <TextInput bxml:id="input_traq" text=""/>
-	                    </BoxPane>
-	                    <BoxPane orientation="horizontal" styles="{spacing:6}">  
+	                        
 	                        <Label text="Select train hierarchical qrels:" styles="{font:{bold:true}}"/>
-	                        <PushButton bxml:id="openSheetButton5" buttonData="Select"/>
+	                        <PushButton bxml:id="openSheetButton4" buttonData="Select"/>
 	                        <TextInput bxml:id="input_trhq" text=""/>
+	                    </BoxPane>
+	                    <BoxPane orientation="horizontal" styles="{spacing:6}"> 
+	                    	<Label text="Select test parafile:" styles="{font:{bold:true}}"/>
+	                        <PushButton bxml:id="openSheetButton5" buttonData="Select"/>
+	                        <TextInput bxml:id="input_tep" text=""/>
 	                        
 	                        <Label text="Select test article qrels:" styles="{font:{bold:true}}"/>
 	                        <PushButton bxml:id="openSheetButton6" buttonData="Select"/>

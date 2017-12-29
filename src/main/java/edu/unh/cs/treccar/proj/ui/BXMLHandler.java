@@ -133,9 +133,9 @@ public class BXMLHandler extends Window implements Bindable {
                     @Override
                     public void sheetClosed(Sheet sheet) {
                         if (sheet.getResult()) {
-                        	testPara = fileBrowserSheet3.getSelectedFile().getAbsolutePath();
+                        	trainArt = fileBrowserSheet3.getSelectedFile().getAbsolutePath();
                         	defaultDir = fileBrowserSheet3.getRootDirectory().getAbsolutePath();
-                        	input_tep.setText(testPara);
+                        	input_traq.setText(trainArt);
                         } else {
                             Alert.alert(MessageType.INFO, "You didn't select anything.", BXMLHandler.this);
                         }
@@ -147,16 +147,16 @@ public class BXMLHandler extends Window implements Bindable {
         openSheetButton4.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
             public void buttonPressed(Button button) {
-                final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
+                //final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
                 fileBrowserSheet4.setRootDirectory(fileBrowserSheet3.getRootDirectory());
                 fileBrowserSheet4.setMode(FileBrowserSheet.Mode.SAVE_AS);
                 fileBrowserSheet4.open(BXMLHandler.this, new SheetCloseListener() {
                     @Override
                     public void sheetClosed(Sheet sheet) {
                         if (sheet.getResult()) {
-                        	trainArt = fileBrowserSheet4.getSelectedFile().getAbsolutePath();
+                        	trainHier = fileBrowserSheet4.getSelectedFile().getAbsolutePath();
                         	defaultDir = fileBrowserSheet4.getRootDirectory().getAbsolutePath();
-                        	input_traq.setText(trainArt);
+                        	input_trhq.setText(trainHier);
                         } else {
                             Alert.alert(MessageType.INFO, "You didn't select anything.", BXMLHandler.this);
                         }
@@ -168,16 +168,16 @@ public class BXMLHandler extends Window implements Bindable {
         openSheetButton5.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
             public void buttonPressed(Button button) {
-                final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
+                //final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
                 fileBrowserSheet5.setRootDirectory(fileBrowserSheet4.getRootDirectory());
                 fileBrowserSheet5.setMode(FileBrowserSheet.Mode.SAVE_AS);
                 fileBrowserSheet5.open(BXMLHandler.this, new SheetCloseListener() {
                     @Override
                     public void sheetClosed(Sheet sheet) {
                         if (sheet.getResult()) {
-                        	trainHier = fileBrowserSheet5.getSelectedFile().getAbsolutePath();
+                        	testPara = fileBrowserSheet5.getSelectedFile().getAbsolutePath();
                         	defaultDir = fileBrowserSheet5.getRootDirectory().getAbsolutePath();
-                        	input_trhq.setText(trainHier);
+                        	input_tep.setText(testPara);
                         } else {
                             Alert.alert(MessageType.INFO, "You didn't select anything.", BXMLHandler.this);
                         }
@@ -189,7 +189,7 @@ public class BXMLHandler extends Window implements Bindable {
         openSheetButton6.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
             public void buttonPressed(Button button) {
-                final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
+                //final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
                 fileBrowserSheet6.setRootDirectory(fileBrowserSheet5.getRootDirectory());
                 fileBrowserSheet6.setMode(FileBrowserSheet.Mode.SAVE_AS);
                 fileBrowserSheet6.open(BXMLHandler.this, new SheetCloseListener() {
@@ -210,7 +210,7 @@ public class BXMLHandler extends Window implements Bindable {
         openSheetButton7.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
             public void buttonPressed(Button button) {
-                final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
+               // final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
                 fileBrowserSheet7.setRootDirectory(fileBrowserSheet6.getRootDirectory());
                 fileBrowserSheet7.setMode(FileBrowserSheet.Mode.SAVE_AS);
                 fileBrowserSheet7.open(BXMLHandler.this, new SheetCloseListener() {
@@ -231,7 +231,7 @@ public class BXMLHandler extends Window implements Bindable {
         openSheetButton8.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
             public void buttonPressed(Button button) {
-                final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
+                //final FileBrowserSheet fileBrowserSheet = new FileBrowserSheet();
                 fileBrowserSheet8.setRootDirectory(fileBrowserSheet7.getRootDirectory());
                 fileBrowserSheet8.setMode(FileBrowserSheet.Mode.SAVE_AS);
                 fileBrowserSheet8.open(BXMLHandler.this, new SheetCloseListener() {
@@ -297,8 +297,7 @@ public class BXMLHandler extends Window implements Bindable {
                         activityIndicator.setActive(false);
                         setEnabled(true);
  
-                        System.out.println("Synchronous task execution complete: \""
-                            + task.getResult() + "\"");
+                        //System.out.println("Synchronous task execution complete: \"" + task.getResult() + "\"");
                     }
  
                     @Override

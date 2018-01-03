@@ -63,9 +63,10 @@ public class RankLibFileCreator {
 					ArrayList<Double> scores = new ArrayList<Double>();
 					
 					para = allParaIDParaMap.get(paraID);
+					/*
 					for(SimilarityFunction f:this.simFunctions)
 						scores.add(f.simScore(new ParaPair(qParaID, paraID), paraObjList));
-					
+					*/
 					isRel = this.isRelevant(paraIDClusters, qParaID, paraID);
 					
 					//Ranklib format

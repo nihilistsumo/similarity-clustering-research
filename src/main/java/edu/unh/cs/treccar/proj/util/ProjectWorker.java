@@ -30,6 +30,7 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class ProjectWorker {
 	private final HashMap<String, Data.Paragraph> parasMap;
+	private final HashMap<String, ArrayList<String>> preprocessedParasMap;
 	private final HashMap<String, ArrayList<String>> pageParasMap;
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
@@ -53,6 +54,7 @@ public class ProjectWorker {
 	public ProjectWorker(UIDataBinder data){
 		this.uidata = data;
 		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
+		this.preprocessedParasMap = DataUtilities.getPreprocessedParaMap(parasMap);
 		this.pageParasMap = DataUtilities.getArticleParasMapFromPath(data.getTrainArtqrels());
 		this.pageSecMap = DataUtilities.getArticleSecMapFromPath(data.getTrainHierqrels());
 		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
@@ -108,7 +110,9 @@ public class ProjectWorker {
 		ArrayList<ParaPairData> pairData = new ArrayList<ParaPairData>();
 		for(int i=0; i<paraList.size()-1; i++){
 			for(int j=i+1; j<paraList.size(); j++){
-				ParaPair pp = new ParaPair(paraList.get(i).getParaId(), paraList.get(j).getParaId());
+				String pid1 = paraList.get(i).getParaId();
+				String pid2 = paraList.get(j).getParaId();
+				ParaPair pp = new ParaPair(pid1, pid2, this.preprocessedParasMap.get(pid1), this.preprocessedParasMap.get(pid2));
 				//ArrayList<Double> scores = this.computeScores(3);
 				ArrayList<Double> scores = this.computeScores(pp, paraList);
 				System.out.println(scores);
@@ -132,10 +136,10 @@ public class ProjectWorker {
 	
 	// new
 	public HashMap<String, ArrayList<ParaPairData>> processParaPairData(
-			HashMap<String, ArrayList<String>> trainPageParasMap) throws IOException{
+			HashMap<String, ArrayList<String>> pageParasMap) throws IOException{
 		HashMap<String, ArrayList<ParaPairData>> allPagesData = new HashMap<String, ArrayList<ParaPairData>>();
-		for(String pageID:trainPageParasMap.keySet()){
-			ArrayList<String> paraIDs = trainPageParasMap.get(pageID);
+		for(String pageID:pageParasMap.keySet()){
+			ArrayList<String> paraIDs = pageParasMap.get(pageID);
 			//ArrayList<String> secIDs = this.pageSecMap.get(pageID);
 			ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
 			for(String paraID:paraIDs)

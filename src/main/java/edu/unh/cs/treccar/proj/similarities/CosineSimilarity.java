@@ -16,8 +16,8 @@ public class CosineSimilarity extends BaseStats implements SimilarityFunction
 	
 	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
 	{
-		paraText1 = ParaUtilities.getParaText1(pp, list);
-		paraText2 = ParaUtilities.getParaText2(pp, list);
+		paraText1 = pp.getPara1tokens();
+		paraText2 = pp.getPara2tokens();
 		
 		vector1 = getNormalisedTermVector(paraText1, "lnc" , list);
 		vector2 = getNormalisedTermVector(paraText2, "ltn" , list);

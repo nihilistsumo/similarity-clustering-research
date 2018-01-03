@@ -1,16 +1,37 @@
 package edu.unh.cs.treccar.proj.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ParaPair implements Serializable {
 	private String para1;
 	private String para2;
+	private ArrayList<String> para1tokens;
+	private ArrayList<String> para2tokens;
 	
-	public ParaPair(String w1, String w2){
-		this.para1 = w1;
-		this.para2 = w2;
+	public ParaPair(String p1, String p2, ArrayList<String> t1, ArrayList<String> t2){
+		this.para1 = p1;
+		this.para2 = p2;
+		this.para1tokens = t1;
+		this.para2tokens = t2;
 	}
 	
+	public ArrayList<String> getPara1tokens() {
+		return para1tokens;
+	}
+
+	public void setPara1tokens(ArrayList<String> para1tokens) {
+		this.para1tokens = para1tokens;
+	}
+
+	public ArrayList<String> getPara2tokens() {
+		return para2tokens;
+	}
+
+	public void setPara2tokens(ArrayList<String> para2tokens) {
+		this.para2tokens = para2tokens;
+	}
+
 	public String getPara1() {
 		return para1;
 	}

@@ -26,8 +26,8 @@ public class LeskSimilarity implements SimilarityFunction
 	
 	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
 	{
-		paraText1 = ParaUtilities.getParaText1(pp, list);
-		paraText2 = ParaUtilities.getParaText2(pp, list);
+		paraText1 = pp.getPara1tokens();
+		paraText2 = pp.getPara2tokens();
 		
 		score = getParaScore(paraText1, paraText2);
 		

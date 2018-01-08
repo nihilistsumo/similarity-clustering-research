@@ -51,9 +51,16 @@
 	                    <BoxPane orientation="horizontal" styles="{spacing:6}">
 	                    	<Label text="Choose similarity functions:" styles="{font:{bold:true}}"/>
 	                    	<Checkbox bxml:id="diceCheck" buttonData="Dice"/>
+	                    	<Checkbox bxml:id="hsoCheck" buttonData="Hirst"/>
 	                    	<Checkbox bxml:id="jacCheck" buttonData="Jaccard"/>
+	                    	<Checkbox bxml:id="jaroCheck" buttonData="Jaro"/>
 	                    	<Checkbox bxml:id="jiangCheck" buttonData="Jiang"/>
 	                    	<Checkbox bxml:id="leaCheck" buttonData="Leacock"/>
+	                    	<Checkbox bxml:id="leskCheck" buttonData="Lesk"/>
+	                    	<Checkbox bxml:id="linCheck" buttonData="Lin"/>
+	                    	<Checkbox bxml:id="pathCheck" buttonData="Path"/>
+	                    	<Checkbox bxml:id="resCheck" buttonData="Resnik"/>
+	                    	<Checkbox bxml:id="wuCheck" buttonData="Wu"/>
 	                    </BoxPane>
 	                    <BoxPane orientation="horizontal" styles="{spacing:6}">
 	                    	<bxml:define>

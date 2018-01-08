@@ -32,10 +32,17 @@ import org.apache.pivot.wtk.TextInput;
 import org.apache.pivot.wtk.Window;
 
 import edu.unh.cs.treccar.proj.similarities.DiceSimilarity;
+import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
 import edu.unh.cs.treccar.proj.similarities.JaccardSimilarity;
+import edu.unh.cs.treccar.proj.similarities.JaroWinklerDistance;
 import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
+import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
+import edu.unh.cs.treccar.proj.similarities.LinSimilarity;
+import edu.unh.cs.treccar.proj.similarities.PathSimilarity;
+import edu.unh.cs.treccar.proj.similarities.ResnikSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
+import edu.unh.cs.treccar.proj.similarities.WuPalmerSimilarity;
 import edu.unh.cs.treccar.proj.util.ParaPairData;
 import edu.unh.cs.treccar.proj.util.ProjectWorker;
 
@@ -60,7 +67,9 @@ public class BXMLHandler extends Window implements Bindable {
     @BXML private TextInput input_simd = null;
     @BXML private TextInput score_data = null;
     @BXML private TextInput input_th = null;
-    @BXML private Checkbox diceCheck = null, jacCheck = null, jiangCheck = null, leaCheck = null;
+    @BXML private Checkbox diceCheck = null, jacCheck = null, jiangCheck = null, leaCheck = null,
+    		hsoCheck = null, jaroCheck = null, leskCheck = null, linCheck = null, pathCheck = null,
+    		resCheck = null, wuCheck = null;
     
     final FileBrowserSheet fileBrowserSheet1 = new FileBrowserSheet();
     final FileBrowserSheet fileBrowserSheet2 = new FileBrowserSheet();
@@ -286,6 +295,20 @@ public class BXMLHandler extends Window implements Bindable {
 					funclist.add(new JiangConrathSimilarity());
 				if(leaCheck.isSelected())
 					funclist.add(new LeacockChodorowSimilarity());
+				if(hsoCheck.isSelected())
+					funclist.add(new HerstStOngeSimilarity());
+				if(jaroCheck.isSelected())
+					funclist.add(new JaroWinklerDistance());
+				if(leskCheck.isSelected())
+					funclist.add(new LeskSimilarity());
+				if(linCheck.isSelected())
+					funclist.add(new LinSimilarity());
+				if(pathCheck.isSelected())
+					funclist.add(new PathSimilarity());
+				if(resCheck.isSelected())
+					funclist.add(new ResnikSimilarity());
+				if(wuCheck.isSelected())
+					funclist.add(new WuPalmerSimilarity());
 				threshold = Double.parseDouble(input_th.getText());
 				data = new UIDataBinder(
 						outdir, trainPara, testPara, trainArt, trainHier, 

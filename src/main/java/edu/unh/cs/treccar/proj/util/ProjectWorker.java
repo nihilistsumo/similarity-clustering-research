@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Random;
 
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.proj.cluster.ClusterResult;
 import edu.unh.cs.treccar.proj.cluster.CustomClustering;
@@ -87,7 +89,7 @@ public class ProjectWorker {
 	}
 	
 	// new
-	private ArrayList<Double> computeScores(ParaPair pp, ArrayList<Data.Paragraph> paraList){
+	private ArrayList<Double> computeScores(ParaPair pp, ArrayList<Data.Paragraph> paraList, ILexicalDatabase db){
 		int size = uidata.getFuncs().size();
 		ArrayList<Double> scores = new ArrayList<Double>(size);
 		/*
@@ -99,14 +101,14 @@ public class ProjectWorker {
 		*/
 		
 		for(SimilarityFunction f:this.funcList){
-			scores.add(f.simScore(pp, paraList));
+			scores.add(f.simScore(pp, db));
 		}
 		
 		return scores;
 	}
 	
 	// new
-	public ArrayList<ParaPairData> getParaPairData(ArrayList<Data.Paragraph> paraList){
+	public ArrayList<ParaPairData> getParaPairData(ArrayList<Data.Paragraph> paraList, ILexicalDatabase db){
 		ArrayList<ParaPairData> pairData = new ArrayList<ParaPairData>();
 		for(int i=0; i<paraList.size()-1; i++){
 			for(int j=i+1; j<paraList.size(); j++){
@@ -114,7 +116,7 @@ public class ProjectWorker {
 				String pid2 = paraList.get(j).getParaId();
 				ParaPair pp = new ParaPair(pid1, pid2, this.preprocessedParasMap.get(pid1), this.preprocessedParasMap.get(pid2));
 				//ArrayList<Double> scores = this.computeScores(3);
-				ArrayList<Double> scores = this.computeScores(pp, paraList);
+				ArrayList<Double> scores = this.computeScores(pp, paraList, db);
 				System.out.println(scores);
 				ParaPairData ppd = new ParaPairData(pp, scores);
 				pairData.add(ppd);
@@ -138,6 +140,7 @@ public class ProjectWorker {
 	public HashMap<String, ArrayList<ParaPairData>> processParaPairData(
 			HashMap<String, ArrayList<String>> pageParasMap) throws IOException{
 		HashMap<String, ArrayList<ParaPairData>> allPagesData = new HashMap<String, ArrayList<ParaPairData>>();
+		ILexicalDatabase db = new NictWordNet();
 		for(String pageID:pageParasMap.keySet()){
 			ArrayList<String> paraIDs = pageParasMap.get(pageID);
 			//ArrayList<String> secIDs = this.pageSecMap.get(pageID);
@@ -146,7 +149,7 @@ public class ProjectWorker {
 				paras.add(this.parasMap.get(paraID));
 			
 			//Expensive op
-			ArrayList<ParaPairData> data = this.getParaPairData(paras);
+			ArrayList<ParaPairData> data = this.getParaPairData(paras, db);
 			//
 			
 			allPagesData.put(pageID, data);

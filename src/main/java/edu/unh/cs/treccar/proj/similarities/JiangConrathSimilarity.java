@@ -2,6 +2,8 @@ package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
 
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.cmu.lti.ws4j.impl.JiangConrath;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.proj.util.ParaPair;
 import edu.unh.cs.treccar.proj.util.ParaUtilities;
@@ -24,13 +26,13 @@ public class JiangConrathSimilarity implements SimilarityFunction
 	 * @param list ArrayList<Data.Paragraph> Conatins a list of Data.Paragraph objects 
 	 * @return JiangConrath score between two paragraphs
 	 */
-	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
+	public double simScore(ParaPair pp, ILexicalDatabase db)
 	{
 		paraText1 = pp.getPara1tokens();
 		System.out.println(paraText1);
 		paraText2 = pp.getPara2tokens();
 		
-		score = getParaScore(paraText1, paraText2);
+		score = getParaScore(paraText1, paraText2, db);
 		
 		return score;
 	}
@@ -41,13 +43,14 @@ public class JiangConrathSimilarity implements SimilarityFunction
 	 * @return similarity score between two lists
 	 */
 	
-	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
+	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2, ILexicalDatabase db)
 	{
 		double s = 0.0d;
 		scores = new ArrayList<Double>();
+		JiangConrath jc = new JiangConrath(db);
 		for(String w1 : list1)
 			for(String w2 : list2)
-				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "jc"));
+				scores.add(jc.calcRelatednessOfWords(w1, w2));
 		s = findMeanScore(scores);
 		return s;
 	}

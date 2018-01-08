@@ -38,12 +38,12 @@ public class HerstStOngeSimilarity implements SimilarityFunction
 	 * @return HerstStOnge score between two paragraphs
 	 */
 	
-	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
+	public double simScore(ParaPair pp, ILexicalDatabase db)
 	{
 		paraText1 = pp.getPara1tokens();
 		paraText2 = pp.getPara2tokens();
 		
-		score = getParaScore(paraText1, paraText2);
+		score = getParaScore(paraText1, paraText2, db);
 		
 		return score;
 	}
@@ -55,13 +55,14 @@ public class HerstStOngeSimilarity implements SimilarityFunction
 	 * @return similarity score between two lists
 	 */
 	
-	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
+	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2, ILexicalDatabase db)
 	{
 		double s = 0.0d;
 		scores = new ArrayList<Double>();
+		HirstStOnge hso = new HirstStOnge(db);
 		for(String w1 : list1)
 			for(String w2 : list2)
-				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "hso"));
+				scores.add(hso.calcRelatednessOfWords(w1, w2));
 		s = findMeanScore(scores);
 		return s;
 	}

@@ -1,11 +1,12 @@
 package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
-import edu.unh.cs.treccar.proj.util.*;
 
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.unh.cs.treccar.proj.util.*;
 import edu.unh.cs.treccar.Data;
 
-public class CosineSimilarity extends BaseStats implements SimilarityFunction
+public class CosineSimilarity extends BaseStats
 {
 	private static ArrayList<String> paraText1;
 	private static ArrayList<String> paraText2;

@@ -29,7 +29,6 @@ public class JiangConrathSimilarity implements SimilarityFunction
 	public double simScore(ParaPair pp, ILexicalDatabase db)
 	{
 		paraText1 = pp.getPara1tokens();
-		System.out.println(paraText1);
 		paraText2 = pp.getPara2tokens();
 		
 		score = getParaScore(paraText1, paraText2, db);

@@ -19,6 +19,7 @@ import java.util.Random;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.cli.DataBinder;
 import edu.unh.cs.treccar.proj.cluster.ClusterResult;
 import edu.unh.cs.treccar.proj.cluster.CustomClustering;
 import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
@@ -27,7 +28,6 @@ import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeacockChodorowSimilarity;
 import edu.unh.cs.treccar.proj.similarities.LeskSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
-import edu.unh.cs.treccar.proj.ui.UIDataBinder;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 
 public class ProjectWorker {
@@ -37,7 +37,7 @@ public class ProjectWorker {
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	private final ArrayList<SimilarityFunction> funcList;
-	private UIDataBinder uidata;
+	private DataBinder uidata;
 	public Properties pr;
 	
 	public HashMap<String, Data.Paragraph> getParasMap() {
@@ -53,7 +53,7 @@ public class ProjectWorker {
 	}
 
 	// new
-	public ProjectWorker(UIDataBinder data){
+	public ProjectWorker(DataBinder data){
 		this.uidata = data;
 		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
 		this.preprocessedParasMap = DataUtilities.getPreprocessedParaMap(parasMap);

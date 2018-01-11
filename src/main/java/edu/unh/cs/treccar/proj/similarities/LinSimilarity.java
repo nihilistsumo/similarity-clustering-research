@@ -48,9 +48,15 @@ public class LinSimilarity implements SimilarityFunction
 	{
 		double s = 0.0d;
 		Lin lin = new Lin(db);
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
-			for(String w2 : list2)
-				scores.add(lin.calcRelatednessOfWords(w1, w2));
+			for(String w2 : list2){
+				s = lin.calcRelatednessOfWords(w1, w2);
+				if(Double.MAX_VALUE-s<0.0001)
+					scores.add(1.0);
+				else
+					scores.add(s);
+			}
 		s = findMeanScore(scores);
 		return s;
 	}

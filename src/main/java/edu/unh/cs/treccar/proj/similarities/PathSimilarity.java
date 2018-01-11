@@ -52,11 +52,12 @@ public class PathSimilarity implements SimilarityFunction
 		scores = new ArrayList<Double>();
 		for(String w1 : list1)
 			for(String w2 : list2){
-				s = path.calcRelatednessOfWords(w1, w2);
-				if(Double.MAX_VALUE-s<0.0001)
-					scores.add(1.0);
-				else
+				if(w1.equals(w2))
+					continue;
+				else{
+					s = path.calcRelatednessOfWords(w1, w2);
 					scores.add(s);
+				}
 			}
 		s = findMeanScore(scores);
 		return s;

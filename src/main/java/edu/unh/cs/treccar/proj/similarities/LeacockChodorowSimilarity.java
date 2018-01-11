@@ -50,8 +50,14 @@ public class LeacockChodorowSimilarity implements SimilarityFunction
 		scores = new ArrayList<Double>();
 		LeacockChodorow lc = new LeacockChodorow(db);
 		for(String w1 : list1)
-			for(String w2 : list2)
-				scores.add(lc.calcRelatednessOfWords(w1, w2));
+			for(String w2 : list2){
+				if(w1.equals(w2))
+					continue;
+				else{
+					s = lc.calcRelatednessOfWords(w1, w2);
+					scores.add(s);
+				}
+			}
 		s = findMeanScore(scores);
 		return s;
 	}

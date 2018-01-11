@@ -61,8 +61,14 @@ public class HerstStOngeSimilarity implements SimilarityFunction
 		scores = new ArrayList<Double>();
 		HirstStOnge hso = new HirstStOnge(db);
 		for(String w1 : list1)
-			for(String w2 : list2)
-				scores.add(hso.calcRelatednessOfWords(w1, w2));
+			for(String w2 : list2){
+				if(w1.equals(w2))
+					continue;
+				else{
+					s = hso.calcRelatednessOfWords(w1, w2);
+					scores.add(s);
+				}
+			}
 		s = findMeanScore(scores);
 		return s;
 	}

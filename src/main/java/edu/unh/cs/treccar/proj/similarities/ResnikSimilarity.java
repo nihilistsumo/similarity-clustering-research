@@ -48,9 +48,15 @@ public class ResnikSimilarity implements SimilarityFunction
 	{
 		double s = 0.0d;
 		Resnik res = new Resnik(db);
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
-			for(String w2 : list2)
-				scores.add(res.calcRelatednessOfWords(w1, w2));
+			for(String w2 : list2){
+				s = res.calcRelatednessOfWords(w1, w2);
+				if(Double.MAX_VALUE-s<0.0001)
+					scores.add(1.0);
+				else
+					scores.add(s);
+			}
 		s = findMeanScore(scores);
 		return s;
 	}

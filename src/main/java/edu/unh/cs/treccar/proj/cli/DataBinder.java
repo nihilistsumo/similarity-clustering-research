@@ -1,10 +1,10 @@
-package edu.unh.cs.treccar.proj.ui;
+package edu.unh.cs.treccar.proj.cli;
 
 import java.util.ArrayList;
 
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
 
-public class UIDataBinder {
+public class DataBinder {
 	private String outdir;
 	private String trainParafile;
 	private String testParafile;
@@ -96,7 +96,7 @@ public class UIDataBinder {
 		this.threshold = threshold;
 	}
 
-	public UIDataBinder(String outdir, String trainParafile,
+	public DataBinder(String outdir, String trainParafile,
 			String testParafile, String trainArtqrels, String trainHierqrels,
 			String testArtqrels, String testHierqrels, String trainScoreData,
 			ArrayList<SimilarityFunction> funcs, double threshold) {

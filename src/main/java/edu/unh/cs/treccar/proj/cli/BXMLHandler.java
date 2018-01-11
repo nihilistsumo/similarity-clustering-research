@@ -1,4 +1,4 @@
-package edu.unh.cs.treccar.proj.ui;
+package edu.unh.cs.treccar.proj.cli;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class BXMLHandler extends Window implements Bindable {
     String outdir, trainPara, testPara, trainArt, trainHier, testArt, testHier, scoreData;
     ArrayList<SimilarityFunction> funcs;
     double threshold;
-    public UIDataBinder data = null;
+    public DataBinder data = null;
     String defaultDir = "/";
     private ActivityIndicator activityIndicator = null;
     
@@ -310,7 +310,7 @@ public class BXMLHandler extends Window implements Bindable {
 				if(wuCheck.isSelected())
 					funclist.add(new WuPalmerSimilarity());
 				threshold = Double.parseDouble(input_th.getText());
-				data = new UIDataBinder(
+				data = new DataBinder(
 						outdir, trainPara, testPara, trainArt, trainHier, 
 						testArt, testHier, scoreData, funclist, threshold);
 				ProcessParaTask task = new ProcessParaTask();

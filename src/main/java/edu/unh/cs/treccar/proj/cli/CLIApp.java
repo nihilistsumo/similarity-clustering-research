@@ -40,6 +40,7 @@ public class CLIApp {
 			prop.getProperty("data-dir")+"/"+prop.getProperty("test-hier-qrels"), prop.getProperty("out-dir")+"/"+prop.getProperty("data-file"),
 			funcList, Double.parseDouble(prop.getProperty("threshold")));
 			ProjectWorker pw = new ProjectWorker(data);
+			//have to normalize all the scores
 			HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
 			pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
 		} catch(IOException e){

@@ -20,7 +20,7 @@
             <version>3.3.2</version>
         </dependency>
         <dependency>
-  			<groupId>org.apache.opennlp</groupId>
+  		<groupId>org.apache.opennlp</groupId>
   			<artifactId>opennlp-tools</artifactId>
   			<version>1.8.3</version>
 		</dependency>
@@ -46,6 +46,11 @@
 		    <groupId>de.sciss</groupId>
 		    <artifactId>ws4j</artifactId>
 		    <version>0.1.0</version>
+			<configuration>
+          		<additionalClasspathElements>
+            		<additionalClasspathElement>/home/sumanta/Downloads/ws4j-1.0.1.jar</additionalClasspathElement>
+          		</additionalClasspathElements>
+        	</configuration>
 		</dependency>
   
 		<!-- https://mvnrepository.com/artifact/org.apache.pivot/pivot-core -->

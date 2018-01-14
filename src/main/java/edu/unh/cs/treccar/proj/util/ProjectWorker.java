@@ -37,6 +37,7 @@ public class ProjectWorker {
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	private final ArrayList<SimilarityFunction> funcList;
+	
 	private DataBinder uidata;
 	public Properties pr;
 	
@@ -66,15 +67,13 @@ public class ProjectWorker {
 		this.funcList = data.getFuncs();
 	}
 	
-	public ArrayList<String> getVocabList(String parafilePath) throws FileNotFoundException{
-		FileInputStream fis = new FileInputStream(new File(parafilePath));
-		String[] paraTokens;
+	public ArrayList<String> getVocabList(){
 		HashSet<String> vocabSet = new HashSet<String>();
-		for(Data.Paragraph para:DeserializeData.iterableParagraphs(fis)){
-			paraTokens = para.getTextOnly().replaceAll("[^a-zA-Z ]", " ").toLowerCase().split("\\s+");
-			for(String token:paraTokens){
+		ArrayList<String> currTokens;
+		for(String pid:this.preprocessedParasMap.keySet()){
+			currTokens = this.preprocessedParasMap.get(pid);
+			for(String token:currTokens)
 				vocabSet.add(token);
-			}
 		}
 		ArrayList<String> vocabList = new ArrayList<String>(vocabSet);
 		return vocabList;
@@ -141,10 +140,13 @@ public class ProjectWorker {
 			HashMap<String, ArrayList<String>> pageParasMap) throws IOException{
 		HashMap<String, ArrayList<ParaPairData>> allPagesData = new HashMap<String, ArrayList<ParaPairData>>();
 		ILexicalDatabase db = new NictWordNet();
+		int i=0;
+		int n=pageParasMap.keySet().size();
 		for(String pageID:pageParasMap.keySet()){
 			ArrayList<String> paraIDs = pageParasMap.get(pageID);
 			//ArrayList<String> secIDs = this.pageSecMap.get(pageID);
 			ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
+			System.out.println("Page ID: "+pageID+", "+paraIDs.size()+" paras");
 			for(String paraID:paraIDs)
 				paras.add(this.parasMap.get(paraID));
 			
@@ -153,7 +155,8 @@ public class ProjectWorker {
 			//
 			
 			allPagesData.put(pageID, data);
-			System.out.println(pageID+" is done");
+			i++;
+			System.out.println(pageID+" is done, "+(n-i)+" to go");
 			//System.out.println(data.size());
 		}
 		return allPagesData;
@@ -210,4 +213,25 @@ public class ProjectWorker {
 		meanScore/=pageScoreMap.size();
 		return meanScore;
 	}
+	
+	/*
+	//new
+	public class WordPair{
+		String word1, word2;
+		
+		public WordPair(String w1, String w2){
+			this.word1 = w1;
+			this.word2 = w2;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			// TODO Auto-generated method stub
+			if(obj.getClass() != WordPair.class)
+				return false;
+			return (((WordPair)obj).word1==this.word1 && ((WordPair)obj).word2==this.word2) ||
+					(((WordPair)obj).word1==this.word2 && ((WordPair)obj).word2==this.word1);
+		}
+	}
+	*/
 }

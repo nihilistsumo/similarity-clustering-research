@@ -63,14 +63,14 @@
 			<artifactId>jawjaw</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope> 
-			<systemPath>${basedir}/lib/jawjaw.jar</systemPath>
+			<systemPath>/home/sumanta/Downloads/jawjaw.jar</systemPath>
   		</dependency>
   		<dependency>
 			<groupId>edu.cmu.lti</groupId>
 			<artifactId>ws4j</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope> 
-			<systemPath>${basedir}/lib/ws4j.jar</systemPath>
+			<systemPath>/home/sumanta/Downloads/ws4j.jar</systemPath>
   		</dependency>
   
 		<!-- https://mvnrepository.com/artifact/org.apache.pivot/pivot-core -->

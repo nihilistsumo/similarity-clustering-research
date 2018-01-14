@@ -90,7 +90,7 @@
           			<archive>
             			<manifest>
               				<addClasspath>true</addClasspath>
-              				<mainClass>fully.qualified.MainClass</mainClass>
+              				<mainClass>edu.unh.cs.treccar.proj.cli.CLIApp</mainClass>
             			</manifest>
           			</archive>
         		</configuration>

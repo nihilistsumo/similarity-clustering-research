@@ -80,6 +80,9 @@
                         <manifest>
                             <mainClass>edu.unh.cs.treccar.proj.cli.CLIApp</mainClass>
                         </manifest>
+						<manifestEntries>
+                        	<Class-Path>/home/sumanta/Downloads/ws4j-1.0.1.jar</Class-Path>
+                    	</manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

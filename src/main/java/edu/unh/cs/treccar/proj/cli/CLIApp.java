@@ -19,6 +19,7 @@ import edu.unh.cs.treccar.proj.similarities.PathSimilarity;
 import edu.unh.cs.treccar.proj.similarities.ResnikSimilarity;
 import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
 import edu.unh.cs.treccar.proj.similarities.WuPalmerSimilarity;
+import edu.unh.cs.treccar.proj.train.RankLibFileCreator;
 import edu.unh.cs.treccar.proj.util.ParaPairData;
 import edu.unh.cs.treccar.proj.util.ProjectMain;
 import edu.unh.cs.treccar.proj.util.ProjectWorker;
@@ -41,8 +42,10 @@ public class CLIApp {
 			funcList, Double.parseDouble(prop.getProperty("threshold")));
 			ProjectWorker pw = new ProjectWorker(data);
 			//have to normalize all the scores
-			HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
-			pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
+			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
+			//pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
+			RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
+			rlb.printRankLibInputFile();
 		} catch(IOException e){
 			e.printStackTrace();
 		}

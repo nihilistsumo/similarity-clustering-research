@@ -2,11 +2,13 @@ package edu.unh.cs.treccar.proj.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,8 +56,9 @@ public class ProjectWorker {
 	}
 
 	// new
-	public ProjectWorker(DataBinder data){
+	public ProjectWorker(DataBinder data, Properties p){
 		this.uidata = data;
+		this.pr = p;
 		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
 		this.preprocessedParasMap = DataUtilities.getPreprocessedParaMap(parasMap);
 		this.pageParasMap = DataUtilities.getArticleParasMapFromPath(data.getTrainArtqrels());
@@ -142,11 +145,15 @@ public class ProjectWorker {
 		ILexicalDatabase db = new NictWordNet();
 		int i=0;
 		int n=pageParasMap.keySet().size();
+		File logOut = new File(this.pr.getProperty("out-dir")+"/"+this.pr.getProperty("log-file"));
 		for(String pageID:pageParasMap.keySet()){
 			ArrayList<String> paraIDs = pageParasMap.get(pageID);
 			//ArrayList<String> secIDs = this.pageSecMap.get(pageID);
 			ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
 			System.out.println("Page ID: "+pageID+", "+paraIDs.size()+" paras");
+			BufferedWriter bw = new BufferedWriter(new FileWriter(logOut));
+			bw.append(pageID+" has started with "+paraIDs.size()+" paras, "+(n-i-1)+" to go after this\n");
+			bw.close();
 			for(String paraID:paraIDs)
 				paras.add(this.parasMap.get(paraID));
 			
@@ -157,6 +164,8 @@ public class ProjectWorker {
 			allPagesData.put(pageID, data);
 			i++;
 			System.out.println(pageID+" is done, "+(n-i)+" to go");
+			//bw.append(" is done, "+(n-i)+" to go");
+			//bw.close();
 			//System.out.println(data.size());
 		}
 		return allPagesData;

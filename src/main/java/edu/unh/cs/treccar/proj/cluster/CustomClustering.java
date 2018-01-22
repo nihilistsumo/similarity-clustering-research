@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.proj.similarities.SimilarityFunction;
 import edu.unh.cs.treccar.proj.util.DataUtilities;
 import edu.unh.cs.treccar.proj.util.ParaPairData;
 
@@ -18,12 +19,13 @@ public class CustomClustering {
 	private String pageID;
 	private ClusterResult cr;
 	
-	public CustomClustering(Properties prop, String pageID, double[] w, 
+	public CustomClustering(Properties prop, String pageID, double[] w, ArrayList<SimilarityFunction> funcs, 
 			ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList){
 		this.pr = prop;
 		this.pageID = pageID;
+		assert(w.length == funcs.size());
 		try {
-			this.cr = this.cluster(pageID, w, sectionIDs, paras, ppdList);
+			this.cr = this.cluster(pageID, w, funcs, sectionIDs, paras, ppdList);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,8 +79,8 @@ public class CustomClustering {
 		return score;
 	}
 	*/
-	private ClusterResult cluster(String pageID, double[] wVec, ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList) throws FileNotFoundException, IOException, ClassNotFoundException{
-		int simCount = Integer.parseInt(this.pr.getProperty("sim-fet-count"));
+	private ClusterResult cluster(String pageID, double[] wVec, ArrayList<SimilarityFunction> f, ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList) throws FileNotFoundException, IOException, ClassNotFoundException{
+		int simCount = f.size();
 		ArrayList<String> paraids = DataUtilities.getOrderedParaIDArray(paras);
 		int pNo = paraids.size();
 		int parents[] = new int[pNo];

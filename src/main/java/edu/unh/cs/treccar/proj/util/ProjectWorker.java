@@ -202,7 +202,7 @@ public class ProjectWorker {
 					paras.add(this.parasMap.get(paraID));
 				ArrayList<ParaPairData> ppdList = pageDataMap.get(pageID);
 				
-				CustomClustering cl = new CustomClustering(this.pr, pageID, w, secIDs, paras, ppdList);
+				CustomClustering cl = new CustomClustering(this.pr, pageID, w, this.funcList, secIDs, paras, ppdList);
 				ClusterResult r = cl.getCr();
 				this.printClusterResult(r);
 				PerformanceMetrics pm = new PerformanceMetrics();

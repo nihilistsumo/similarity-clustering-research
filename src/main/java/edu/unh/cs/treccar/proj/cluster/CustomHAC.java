@@ -15,39 +15,42 @@ public class CustomHAC {
 	public HashMap<HashSet<String>, ArrayList<Double>> clusterPairData;
 	public Properties prop;
 	public String pageID;
+	public int secNo;
 	
 	public CustomHAC(Properties p, String pID, double[] w, ArrayList<SimilarityFunction> funcs, 
 			ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList){
 		this.prop = p;
 		this.pageID = pID;
-		
+		this.secNo = sectionIDs.size();
 	}
 
 	public HashMap<String, ArrayList<String>> cluster(ArrayList<Data.Paragraph> paras, 
 			ArrayList<ParaPairData> ppdList, double[] optw, ArrayList<String> secIDs){
 		
 		// Initialization //
-		HashMap<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>();
+		HashMap<String, ArrayList<String>> clusters = new HashMap<String, ArrayList<String>>();
 		HashMap<HashSet<String>, ArrayList<Double>> clusterPairData = new HashMap<HashSet<String>, ArrayList<Double>>();
+		int noClusters = 0;
 		Integer clusterID = 1;
 		for(Data.Paragraph p:paras){
 			ArrayList<String> paraList = new ArrayList<String>();
 			paraList.add(p.getParaId());
-			result.put(clusterID.toString(), paraList);
+			clusters.put("c"+clusterID, paraList);
 			clusterID++;
 		}
+		noClusters = clusters.size();
 		for(ParaPairData ppd:ppdList){
 			String p1 = ppd.getParaPair().getPara1();
 			String p2 = ppd.getParaPair().getPara2();
 			String c1 = "", c2 = "";
-			for(String c:result.keySet()){
-				if(p1.equals(result.get(c))){
+			for(String c:clusters.keySet()){
+				if(p1.equals(clusters.get(c))){
 					c1 = c;
 					break;
 				}
 			}
-			for(String c:result.keySet()){
-				if(p2.equals(result.get(c))){
+			for(String c:clusters.keySet()){
+				if(p2.equals(clusters.get(c))){
 					c2 = c;
 					break;
 				}
@@ -60,7 +63,7 @@ public class CustomHAC {
 		// ------------ //
 		
 		boolean isConverged = false;
-		while(!isConverged){
+		while(noClusters>this.secNo){
 			HashSet<String> clusterPairMax = null;
 			double maxScore = 0.0;
 			for(HashSet<String> cp:clusterPairData.keySet()){
@@ -75,9 +78,44 @@ public class CustomHAC {
 			Iterator<String> it = clusterPairMax.iterator();
 			String mergeC1 = it.next();
 			String mergeC2 = it.next();
+			String mergedC = mergeC1+mergeC2;
 			
+			// merge two clusters mergeC1 and mergeC2
+			for(String cid:clusters.keySet()){
+				if(cid.equals(mergeC1) || cid.equals(mergeC2))
+					continue;
+				HashSet<String> cxz = new HashSet<String>();
+				HashSet<String> cyz = new HashSet<String>();
+				HashSet<String> cxyz = new HashSet<String>();
+				cxz.add(mergeC1);cxz.add(cid);
+				cyz.add(mergeC2);cyz.add(cid);
+				cxyz.add(mergedC); cxyz.add(cid);
+				clusterPairData.put(cxyz, this.avg(clusterPairData.get(cxz), clusterPairData.get(cyz)));
+				clusterPairData.remove(cxz);
+				clusterPairData.remove(cyz);
+			}
+			ArrayList<String> mergedParas = clusters.get(mergeC1);
+			mergedParas.addAll(clusters.get(mergeC2));
+			clusters.put(mergedC, mergedParas);
+			clusters.remove(mergeC1);
+			clusters.remove(mergeC2);
+			
+			noClusters--;
 		}
 		
-		return result;
+		return clusters;
+	}
+	
+	public ArrayList<Double> avg(ArrayList<Double> s1, ArrayList<Double> s2){
+		ArrayList<Double> r = new ArrayList<Double>();
+		for(int i=0; i<s1.size(); i++)
+			r.add(0.0);
+		for(int i=0; i<s1.size(); i++)
+			r.set(i, (s1.get(i)+s2.get(i))/2);
+		return r;
+	}
+	
+	public boolean checkConverged(){
+		return false;
 	}
 }

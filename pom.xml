@@ -58,20 +58,7 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.7.2</version>
 		</dependency>
-		<dependency>
-			<groupId>edu.cmu.lti</groupId>
-			<artifactId>jawjaw</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope> 
-			<systemPath>/home/sumanta/Downloads/jawjaw.jar</systemPath>
-  		</dependency>
-  		<dependency>
-			<groupId>edu.cmu.lti</groupId>
-			<artifactId>ws4j</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope> 
-			<systemPath>/home/sumanta/Downloads/ws4j.jar</systemPath>
-  		</dependency>
+		
   
 		<!-- https://mvnrepository.com/artifact/org.apache.pivot/pivot-core -->
 		<dependency>

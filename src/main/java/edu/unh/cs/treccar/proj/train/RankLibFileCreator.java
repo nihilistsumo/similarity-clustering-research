@@ -44,7 +44,7 @@ public class RankLibFileCreator {
 				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-art-qrels"));
 		HashMap<String, Data.Paragraph> allParaIDParaMap = DataUtilities.getParaMapFromPath(
 				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-parafile"));
-		File ranklibOut = new File(this.pr.getProperty("out-dir")+"/ranklib_input");
+		File ranklibOut = new File(this.pr.getProperty("out-dir")+"/"+this.pr.getProperty("rlib-file"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(ranklibOut));
 		FileInputStream fis = new FileInputStream(new File(this.pr.getProperty("out-dir")+"/"+this.pr.getProperty("data-file")));
 		ObjectInputStream ois = new ObjectInputStream(fis);

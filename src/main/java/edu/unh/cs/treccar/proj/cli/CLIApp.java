@@ -40,12 +40,11 @@ public class CLIApp {
 			prop.getProperty("data-dir")+"/"+prop.getProperty("train-hier-qrels"), prop.getProperty("data-dir")+"/"+prop.getProperty("test-art-qrels"),
 			prop.getProperty("data-dir")+"/"+prop.getProperty("test-hier-qrels"), prop.getProperty("out-dir")+"/"+prop.getProperty("data-file"),
 			funcList, Double.parseDouble(prop.getProperty("threshold")));
-			ProjectWorker pw = new ProjectWorker(data, prop);
-			//have to normalize all the scores
-			HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
-			pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
-			//RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
-			//rlb.printRankLibInputFile();
+			//ProjectWorker pw = new ProjectWorker(data, prop);
+			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
+			//pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
+			RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
+			rlb.printRankLibInputFile();
 		} catch(IOException e){
 			e.printStackTrace();
 		}

@@ -40,7 +40,7 @@ public class RankLibFileCreator {
 	}
 	
 	public void printRankLibInputFile() throws IOException{
-		HashMap<String, ArrayList<String>> pageParaMap = DataUtilities.getArticleParasMapFromPath(
+		HashMap<String, ArrayList<String>> pageParaMap = DataUtilities.getTrueArticleParasMapFromPath(
 				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-art-qrels"));
 		HashMap<String, Data.Paragraph> allParaIDParaMap = DataUtilities.getParaMapFromPath(
 				this.pr.getProperty("data-dir")+"/"+this.pr.getProperty("train-parafile"));

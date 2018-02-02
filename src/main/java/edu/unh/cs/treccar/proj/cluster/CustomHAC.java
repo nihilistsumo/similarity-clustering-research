@@ -16,17 +16,28 @@ public class CustomHAC {
 	public Properties prop;
 	public String pageID;
 	public int secNo;
+	ArrayList<Data.Paragraph> paraList;
+	ArrayList<ParaPairData> ppds;
+	ArrayList<String> secids;
+	double[] wVec;
 	
 	public CustomHAC(Properties p, String pID, double[] w, ArrayList<SimilarityFunction> funcs, 
 			ArrayList<String> sectionIDs, ArrayList<Data.Paragraph> paras, ArrayList<ParaPairData> ppdList){
 		this.prop = p;
 		this.pageID = pID;
 		this.secNo = sectionIDs.size();
+		this.paraList = paras;
+		this.ppds = ppdList;
+		this.wVec = w;
+		this.secids = sectionIDs;
 	}
 
-	public HashMap<String, ArrayList<String>> cluster(ArrayList<Data.Paragraph> paras, 
-			ArrayList<ParaPairData> ppdList, double[] optw, ArrayList<String> secIDs){
+	public HashMap<String, ArrayList<String>> cluster(){
 		
+		ArrayList<Data.Paragraph> paras = this.paraList;
+		ArrayList<ParaPairData> ppdList = this.ppds;
+		double[] optw = this.wVec;
+		ArrayList<String> secIDs = this.secids;
 		// Initialization //
 		HashMap<String, ArrayList<String>> clusters = new HashMap<String, ArrayList<String>>();
 		HashMap<HashSet<String>, ArrayList<Double>> clusterPairData = new HashMap<HashSet<String>, ArrayList<Double>>();
@@ -44,13 +55,13 @@ public class CustomHAC {
 			String p2 = ppd.getParaPair().getPara2();
 			String c1 = "", c2 = "";
 			for(String c:clusters.keySet()){
-				if(p1.equals(clusters.get(c))){
+				if(p1.equals(clusters.get(c).get(0))){
 					c1 = c;
 					break;
 				}
 			}
 			for(String c:clusters.keySet()){
-				if(p2.equals(clusters.get(c))){
+				if(p2.equals(clusters.get(c).get(0))){
 					c2 = c;
 					break;
 				}

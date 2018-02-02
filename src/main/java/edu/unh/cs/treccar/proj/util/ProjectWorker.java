@@ -24,6 +24,7 @@ import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.proj.cli.DataBinder;
 import edu.unh.cs.treccar.proj.cluster.ClusterResult;
 import edu.unh.cs.treccar.proj.cluster.CustomClustering;
+import edu.unh.cs.treccar.proj.cluster.CustomHAC;
 import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
 import edu.unh.cs.treccar.proj.similarities.JaroWinklerDistance;
 import edu.unh.cs.treccar.proj.similarities.JiangConrathSimilarity;
@@ -35,7 +36,7 @@ import edu.unh.cs.treccar.read_data.DeserializeData;
 public class ProjectWorker {
 	private final HashMap<String, Data.Paragraph> parasMap;
 	private final HashMap<String, ArrayList<String>> preprocessedParasMap;
-	private final HashMap<String, ArrayList<String>> pageParasMap;
+	private final HashMap<String, ArrayList<String>> truePageParasMap;
 	private final HashMap<String, ArrayList<String>> pageSecMap;
 	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	private final ArrayList<SimilarityFunction> funcList;
@@ -47,8 +48,8 @@ public class ProjectWorker {
 		return parasMap;
 	}
 
-	public HashMap<String, ArrayList<String>> getPageParasMap() {
-		return pageParasMap;
+	public HashMap<String, ArrayList<String>> getTruePageParasMap() {
+		return truePageParasMap;
 	}
 	
 	public ArrayList<SimilarityFunction> getFuncList(){
@@ -61,10 +62,11 @@ public class ProjectWorker {
 		this.pr = p;
 		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
 		this.preprocessedParasMap = DataUtilities.getPreprocessedParaMap(parasMap);
-		this.pageParasMap = DataUtilities.getArticleParasMapFromPath(data.getTrainArtqrels());
-		this.pageSecMap = DataUtilities.getArticleSecMapFromPath(data.getTrainHierqrels());
+		this.truePageParasMap = DataUtilities.getTrueArticleParasMapFromPath(data.getTrainArtqrels());
+		
+		this.pageSecMap = DataUtilities.getArticleSecMap(data.getTrainOutfile());
 		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
-		for(String pageID:this.pageParasMap.keySet()){
+		for(String pageID:this.truePageParasMap.keySet()){
 			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(pageID, data.getTrainHierqrels()));
 		}
 		this.funcList = data.getFuncs();
@@ -185,6 +187,36 @@ public class ProjectWorker {
 		}
 	}
 	
+	// new
+	public void runClustering(){
+		try {
+			FileInputStream fis = new FileInputStream(new File(pr.getProperty("out-dir")+"/"+pr.getProperty("data-file")));
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			HashMap<String, ArrayList<ParaPairData>> ppdData = (HashMap<String, ArrayList<ParaPairData>>) ois.readObject();
+			double[] w = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6};
+			for(String pageid:this.pageSecMap.keySet()){
+				ArrayList<Data.Paragraph> paraList = new ArrayList<Data.Paragraph>();
+				for(String paraid:this.truePageParasMap.get(pageid))
+					paraList.add(this.parasMap.get(paraid));
+				CustomHAC hac = new CustomHAC(pr, pageid, w, this.funcList, this.pageSecMap.get(pageid), paraList, ppdData.get(pageid));
+				HashMap<String, ArrayList<String>> clusterResult = hac.cluster();
+				System.out.println("Page ID: "+pageid+"\n");
+				for(String cid:clusterResult.keySet()){
+					System.out.println("Cluster ID: "+cid);
+					System.out.println("-----------------------------");
+					for(String pid:clusterResult.get(cid))
+						System.out.println(pid);
+					System.out.println("-----------------------------");
+					System.out.println();
+				}
+			}
+			ois.close();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public double runClusteringOnTest(double[] w){
 		HashMap<String, Double> pageScoreMap = new HashMap<String, Double>();
 		double meanScore = 0;
@@ -195,7 +227,7 @@ public class ProjectWorker {
 			HashMap<String, ArrayList<ParaPairData>> pageDataMap = 
 					(HashMap<String, ArrayList<ParaPairData>>)ois.readObject();
 			for(String pageID:pageDataMap.keySet()){
-				ArrayList<String> paraIDs = this.pageParasMap.get(pageID);
+				ArrayList<String> paraIDs = this.truePageParasMap.get(pageID);
 				ArrayList<String> secIDs = this.pageSecMap.get(pageID);
 				ArrayList<Data.Paragraph> paras = new ArrayList<Data.Paragraph>();
 				for(String paraID:paraIDs)

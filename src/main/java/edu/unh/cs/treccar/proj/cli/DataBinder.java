@@ -8,6 +8,24 @@ public class DataBinder {
 	private String outdir;
 	private String trainParafile;
 	private String testParafile;
+	private String trainOutfile;
+	public String getTrainOutfile() {
+		return trainOutfile;
+	}
+
+	public void setTrainOutfile(String trainOutfile) {
+		this.trainOutfile = trainOutfile;
+	}
+
+	public String getTestOutfile() {
+		return testOutfile;
+	}
+
+	public void setTestOutfile(String testOutfile) {
+		this.testOutfile = testOutfile;
+	}
+
+	private String testOutfile;
 	private String trainArtqrels;
 	private String trainHierqrels;
 	private String testArtqrels;
@@ -96,13 +114,15 @@ public class DataBinder {
 		this.threshold = threshold;
 	}
 
-	public DataBinder(String outdir, String trainParafile,
-			String testParafile, String trainArtqrels, String trainHierqrels,
+	public DataBinder(String outdir, String trainParafile, String trainOutline,
+			String testParafile, String testOutline, String trainArtqrels, String trainHierqrels,
 			String testArtqrels, String testHierqrels, String trainScoreData,
 			ArrayList<SimilarityFunction> funcs, double threshold) {
 		super();
 		this.outdir = outdir;
 		this.trainParafile = trainParafile;
+		this.trainOutfile = trainOutline;
+		this.testOutfile = testOutline;
 		this.testParafile = testParafile;
 		this.trainArtqrels = trainArtqrels;
 		this.trainHierqrels = trainHierqrels;

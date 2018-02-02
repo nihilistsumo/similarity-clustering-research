@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import co.nstant.in.cbor.CborException;
@@ -44,7 +46,7 @@ public class DataUtilities {
 		return processed;
 	}
 	
-	public static HashMap<String, ArrayList<String>> getArticleParasMapFromPath(String path){
+	public static HashMap<String, ArrayList<String>> getTrueArticleParasMapFromPath(String path){
 		HashMap<String, ArrayList<String>> articleMap = new HashMap<String, ArrayList<String>>();
 		BufferedReader br;
 		try{
@@ -91,6 +93,41 @@ public class DataUtilities {
 			e.printStackTrace();
 		}
 		return articleSecMap;
+	}
+	
+	public static HashMap<String, ArrayList<String>> getArticleSecMap(String outlinePath){
+		HashMap<String, ArrayList<String>> articleSecMap = new HashMap<String, ArrayList<String>>();
+		try {
+			FileInputStream fis = new FileInputStream(new File(outlinePath));
+			final Iterator<Data.Page> pageIt = DeserializeData.iterAnnotations(fis);
+			for(int i=0; pageIt.hasNext(); i++){
+				Data.Page page = pageIt.next();
+				ArrayList<String> secIDsInPage = new ArrayList<String>();
+				for(Data.Section sec:getAllSections(page))
+					secIDsInPage.add(page.getPageId()+"/"+sec.getHeadingId());
+				articleSecMap.put(page.getPageId(), secIDsInPage);
+			}
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+		return articleSecMap;
+	}
+	
+	public static ArrayList<Data.Section> getAllSections(Data.Page page){
+		ArrayList<Data.Section> secList = new ArrayList<Data.Section>();
+		for(Data.Section sec:page.getChildSections())
+			addSectionToList(sec, secList);
+		return secList;
+	}
+	
+	private static void addSectionToList(Data.Section sec, ArrayList<Data.Section> secList){
+		if(sec.getChildSections() == null || sec.getChildSections().size() == 0)
+			secList.add(sec);
+		else{
+			for(Data.Section child:sec.getChildSections())
+				addSectionToList(child, secList);
+			secList.add(sec);
+		}
 	}
 	// Converts arraylist of para objects into their corresponding para id array
 	public static ArrayList<String> getOrderedParaIDArray(ArrayList<Data.Paragraph> paras){

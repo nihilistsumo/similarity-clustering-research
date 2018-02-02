@@ -193,7 +193,7 @@ public class ProjectWorker {
 			FileInputStream fis = new FileInputStream(new File(pr.getProperty("out-dir")+"/"+pr.getProperty("data-file")));
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			HashMap<String, ArrayList<ParaPairData>> ppdData = (HashMap<String, ArrayList<ParaPairData>>) ois.readObject();
-			double[] w = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6};
+			double[] w = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
 			for(String pageid:this.pageSecMap.keySet()){
 				ArrayList<Data.Paragraph> paraList = new ArrayList<Data.Paragraph>();
 				for(String paraid:this.truePageParasMap.get(pageid))

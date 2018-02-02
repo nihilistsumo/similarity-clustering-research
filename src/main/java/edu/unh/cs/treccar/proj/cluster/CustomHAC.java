@@ -105,6 +105,10 @@ public class CustomHAC {
 				clusterPairData.remove(cxz);
 				clusterPairData.remove(cyz);
 			}
+			HashSet<String> cxy = new HashSet<String>();
+			cxy.add(mergeC1);cxy.add(mergeC2);
+			clusterPairData.remove(cxy);
+			
 			ArrayList<String> mergedParas = clusters.get(mergeC1);
 			mergedParas.addAll(clusters.get(mergeC2));
 			clusters.put(mergedC, mergedParas);

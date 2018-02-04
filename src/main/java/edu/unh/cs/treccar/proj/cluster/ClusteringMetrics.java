@@ -85,7 +85,7 @@ public class ClusteringMetrics {
 							stats[3]++;
 						}
 						else{
-							//diff cluster in cand 
+							//diff cluster in cand  
 							stats[0]++;
 						}
 					}

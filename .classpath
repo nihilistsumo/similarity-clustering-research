@@ -22,5 +22,14 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/sumanta/Documents/mallet/mallet-2.0.8/dist/mallet.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Documents/mallet/mallet-2.0.8/dist/mallet-deps.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Documents/new_research/unh/class_project/trec-car-tools-master/java1.7/src/main/java/ws4j-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-core-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-wtk-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-charts-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-web-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-web-server-2.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/sumanta/Downloads/apache-pivot-2.0.5/lib/pivot-wtk-terra-2.0.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

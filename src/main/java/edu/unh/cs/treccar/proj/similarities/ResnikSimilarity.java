@@ -2,6 +2,8 @@ package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
 
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.cmu.lti.ws4j.impl.Resnik;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.proj.util.ParaPair;
 import edu.unh.cs.treccar.proj.util.ParaUtilities;
@@ -26,12 +28,12 @@ public class ResnikSimilarity implements SimilarityFunction
 	 * @return Resnik score between two paragraphs
 	 */
 	
-	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
+	public double simScore(ParaPair pp, ILexicalDatabase db)
 	{
-		paraText1 = ParaUtilities.getParaText1(pp, list);
-		paraText2 = ParaUtilities.getParaText2(pp, list);
+		paraText1 = pp.getPara1tokens();
+		paraText2 = pp.getPara2tokens();
 		
-		score = getParaScore(paraText1, paraText2);
+		score = getParaScore(paraText1, paraText2, db);
 		
 		return score;
 	}
@@ -42,12 +44,20 @@ public class ResnikSimilarity implements SimilarityFunction
 	 * @return similarity score between two lists
 	 */
 	
-	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2)
+	private static double getParaScore(ArrayList<String> list1, ArrayList<String> list2, ILexicalDatabase db)
 	{
 		double s = 0.0d;
+		Resnik res = new Resnik(db);
+		scores = new ArrayList<Double>();
 		for(String w1 : list1)
-			for(String w2 : list2)
-				scores.add(WordSemanticSimilarity.findSimilarity(w1, w2, "res"));
+			for(String w2 : list2){
+				if(w1.equals(w2))
+					continue;
+				else{
+					s = res.calcRelatednessOfWords(w1, w2);
+					scores.add(s);
+				}
+			}
 		s = findMeanScore(scores);
 		return s;
 	}

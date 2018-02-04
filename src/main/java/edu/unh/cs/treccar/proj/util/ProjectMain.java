@@ -49,21 +49,21 @@ public class ProjectMain {
 			RankLibFileCreator rl = new RankLibFileCreator(prop, simFuncList);
 			rl.printRankLibInputFile();
 			
-			/*
-			ProjectWorker worker = new ProjectWorker(prop, simFuncList);
-			worker.processParaPairData();
+			// get pageid-paraids map from article qrels of train dataset and use it with process
+			//ProjectWorker worker = new ProjectWorker(prop, simFuncList);
+			//worker.processParaPairData();
 			
 			// This w is to be optimized
 			double[] w = {0.1, 0.05, 0.2, 0.4, 0.15};
-			double score = worker.runClusteringOnTest(w);
+			//double score = worker.runClusteringOnTest(w);
 			
-			System.out.println("Mean acc: "+score);
-			*/
+			//System.out.println("Mean acc: "+score);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Main is working");
 	}
-
+	
 }

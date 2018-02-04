@@ -1,8 +1,9 @@
 package edu.unh.cs.treccar.proj.similarities;
 
 import java.util.ArrayList;
-import edu.unh.cs.treccar.proj.util.*;
 
+import edu.cmu.lti.lexical_db.ILexicalDatabase;
+import edu.unh.cs.treccar.proj.util.*;
 import edu.unh.cs.treccar.Data;
 
 public class JaccardSimilarity implements SimilarityFunction
@@ -15,9 +16,9 @@ public class JaccardSimilarity implements SimilarityFunction
 	 * @return jaccard score between two paragraphs
 	 */
 	
-	public double simScore(ParaPair pp, ArrayList<Data.Paragraph> list)
+	public double simScore(ParaPair pp, ILexicalDatabase db)
 	{
-		double D = new DiceSimilarity().simScore(pp, list);
+		double D = new DiceSimilarity().simScore(pp, db);
 		score = D/(2 - D);
 		
 		return score;

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.unh.cs.treccar</groupId>
-    <artifactId>cs853-project</artifactId>
+    <artifactId>similarity-research</artifactId>
     <version>1.0</version>
 
     <dependencies>
@@ -20,34 +20,63 @@
             <version>3.3.2</version>
         </dependency>
         <dependency>
-  			<groupId>org.apache.opennlp</groupId>
+  		<groupId>org.apache.opennlp</groupId>
   			<artifactId>opennlp-tools</artifactId>
   			<version>1.8.3</version>
 		</dependency>
 		
-  <dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-    <version>4.0</version>
-    <scope>compile</scope>
-  </dependency>
-  <dependency>
-    <groupId>org.xerial</groupId>
-    <artifactId>sqlite-jdbc</artifactId>
-    <version>3.7.2</version>
-  </dependency>
-  <dependency>
-    <groupId>de.sciss</groupId>
-    <artifactId>jawjaw</artifactId>
-    <version>0.1.0</version>
-  </dependency>
- 
-<dependency>
-    <groupId>de.sciss</groupId>
-    <artifactId>ws4j</artifactId>
-    <version>0.1.0</version>
-  </dependency>
+  		<dependency>
+    		<groupId>junit</groupId>
+    		<artifactId>junit</artifactId>
+    		<version>4.0</version>
+    		<scope>compile</scope>
+  		</dependency>
+  		<dependency>
+    		<groupId>org.xerial</groupId>
+    		<artifactId>sqlite-jdbc</artifactId>
+    		<version>3.7.2</version>
+  		</dependency>
+  		<dependency>
+    		<groupId>de.sciss</groupId>
+    		<artifactId>jawjaw</artifactId>
+	    	<version>0.1.0</version>
+	  	</dependency>
+		<dependency>
+		    <groupId>de.sciss</groupId>
+		    <artifactId>ws4j</artifactId>
+		    <version>0.1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.0</version>
+			<scope>compile</scope>
+  		</dependency>
+  		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.7.2</version>
+		</dependency>
+		
+  
+		<!-- https://mvnrepository.com/artifact/org.apache.pivot/pivot-core -->
+		<dependency>
+		    <groupId>org.apache.pivot</groupId>
+		    <artifactId>pivot-core</artifactId>
+		    <version>2.0.5</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.pivot/pivot-wtk -->
+		<dependency>
+		    <groupId>org.apache.pivot</groupId>
+		    <artifactId>pivot-wtk</artifactId>
+		    <version>2.0.5</version>
+		</dependency>
+
+  
     </dependencies>
+    
 
     <build>
         <plugins>
@@ -61,10 +90,25 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>edu.unh.cs.treccar.proj.ProjectMain</mainClass>
+                            <mainClass>edu.unh.cs.treccar.proj.cli.CLIApp</mainClass>
                         </manifest>
+						<manifestEntries>
+                        	<Class-Path>/home/sumanta/Downloads/ws4j-1.0.1.jar</Class-Path>
+                    	</manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-jar-plugin</artifactId>
+        		<configuration>
+          			<archive>
+            			<manifest>
+              				<addClasspath>true</addClasspath>
+              				<mainClass>edu.unh.cs.treccar.proj.cli.CLIApp</mainClass>
+            			</manifest>
+          			</archive>
+        		</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -82,6 +126,17 @@
                     <goals>assembly:single</goals>
                 </configuration>
             </plugin>
+			
+			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-plugin</artifactId>
+        		<version>2.20.1</version>
+        		<configuration>
+          			<additionalClasspathElements>
+            			<additionalClasspathElement>/home/sumanta/Downloads/ws4j-1.0.1.jar</additionalClasspathElement>
+          			</additionalClasspathElements>
+        		</configuration>
+      		</plugin>
 
         </plugins>
     </build>

@@ -76,7 +76,7 @@ public class CustomHAC {
 		boolean isConverged = false;
 		while(noClusters>this.secNo){
 			HashSet<String> clusterPairMax = null;
-			double maxScore = 0.0;
+			double maxScore = -Double.MAX_VALUE;
 			for(HashSet<String> cp:clusterPairData.keySet()){
 				double score = 0.0;
 				for(int i=0; i<optw.length; i++)

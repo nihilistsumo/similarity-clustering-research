@@ -23,6 +23,7 @@ import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.proj.cli.DataBinder;
 import edu.unh.cs.treccar.proj.cluster.ClusterResult;
+import edu.unh.cs.treccar.proj.cluster.ClusteringMetrics;
 import edu.unh.cs.treccar.proj.cluster.CustomClustering;
 import edu.unh.cs.treccar.proj.cluster.CustomHAC;
 import edu.unh.cs.treccar.proj.similarities.HerstStOngeSimilarity;
@@ -38,8 +39,13 @@ public class ProjectWorker {
 	private final HashMap<String, ArrayList<String>> preprocessedParasMap;
 	private final HashMap<String, ArrayList<String>> truePageParasMap;
 	private final HashMap<String, ArrayList<String>> pageSecMap;
-	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
 	private final ArrayList<SimilarityFunction> funcList;
+	
+	private final HashMap<String, ArrayList<ArrayList<String>>> gtClusterMap;
+	private final HashMap<String, Data.Paragraph> parasMapTest;
+	private final HashMap<String, ArrayList<String>> preprocessedParasMapTest;
+	private final HashMap<String, ArrayList<String>> truePageParasMapTest;
+	private final HashMap<String, ArrayList<String>> pageSecMapTest;
 	
 	private DataBinder uidata;
 	public Properties pr;
@@ -58,18 +64,22 @@ public class ProjectWorker {
 
 	// new
 	public ProjectWorker(DataBinder data, Properties p){
+		//common or train
 		this.uidata = data;
 		this.pr = p;
 		this.parasMap = DataUtilities.getParaMapFromPath(data.getTrainParafile());
 		this.preprocessedParasMap = DataUtilities.getPreprocessedParaMap(parasMap);
 		this.truePageParasMap = DataUtilities.getTrueArticleParasMapFromPath(data.getTrainArtqrels());
-		
 		this.pageSecMap = DataUtilities.getArticleSecMap(data.getTrainOutfile());
-		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
-		for(String pageID:this.truePageParasMap.keySet()){
-			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(pageID, data.getTrainHierqrels()));
-		}
 		this.funcList = data.getFuncs();
+		//test
+		this.parasMapTest = DataUtilities.getParaMapFromPath(data.getTestParafile());
+		this.preprocessedParasMapTest = DataUtilities.getPreprocessedParaMap(parasMapTest);
+		this.truePageParasMapTest = DataUtilities.getTrueArticleParasMapFromPath(data.getTestArtqrels());
+		this.pageSecMapTest = DataUtilities.getArticleSecMap(data.getTestOutfile());
+		this.gtClusterMap = new HashMap<String, ArrayList<ArrayList<String>>>();
+		for(String pageID:this.truePageParasMapTest.keySet())
+			this.gtClusterMap.put(pageID, DataUtilities.getGTClusters(pageID, data.getTestHierqrels()));
 	}
 	
 	public ArrayList<String> getVocabList(){
@@ -190,15 +200,38 @@ public class ProjectWorker {
 	// new
 	public void runClustering(){
 		try {
-			FileInputStream fis = new FileInputStream(new File(pr.getProperty("out-dir")+"/"+pr.getProperty("data-file")));
+			FileInputStream fis = new FileInputStream(new File(pr.getProperty("out-dir")+"/"+pr.getProperty("test-data-file")));
 			ObjectInputStream ois = new ObjectInputStream(fis);
+			ClusteringMetrics cm;
 			HashMap<String, ArrayList<ParaPairData>> ppdData = (HashMap<String, ArrayList<ParaPairData>>) ois.readObject();
-			double[] w = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
-			for(String pageid:this.pageSecMap.keySet()){
+			
+			double[] w = null;
+			BufferedReader br = new BufferedReader(new FileReader(new File(pr.getProperty("out-dir")+"/"+pr.getProperty("rlib-model"))));
+			String line = br.readLine();
+			while(line!=null){
+				if(!line.startsWith("#")){
+					String[] weights = line.split(" ");
+					w = new double[weights.length];
+					for(int i=0; i<weights.length; i++)
+						w[i] = Double.parseDouble(weights[i].split(":")[1]);
+					break;
+				}
+				line = br.readLine();	
+			}
+			br.close();
+			
+			//double[] w = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
+			double meanRand = 0.0, meanF1 = 0.0, rand, f1;
+			int pageCount = 0;
+			for(String pageid:this.pageSecMapTest.keySet()){
+				
+				// populate paralist to contain all paragraph in page
 				ArrayList<Data.Paragraph> paraList = new ArrayList<Data.Paragraph>();
-				for(String paraid:this.truePageParasMap.get(pageid))
-					paraList.add(this.parasMap.get(paraid));
-				CustomHAC hac = new CustomHAC(pr, pageid, w, this.funcList, this.pageSecMap.get(pageid), paraList, ppdData.get(pageid));
+				for(String paraid:this.truePageParasMapTest.get(pageid))
+					paraList.add(this.parasMapTest.get(paraid));
+				// ---------------------------------------------------- //
+				
+				CustomHAC hac = new CustomHAC(pr, pageid, w, this.funcList, this.pageSecMapTest.get(pageid), paraList, ppdData.get(pageid));
 				HashMap<String, ArrayList<String>> clusterResult = hac.cluster();
 				System.out.println("Page ID: "+pageid+"\n");
 				for(String cid:clusterResult.keySet()){
@@ -209,7 +242,26 @@ public class ProjectWorker {
 					System.out.println("-----------------------------");
 					System.out.println();
 				}
+				ArrayList<ArrayList<String>> candC = new ArrayList<ArrayList<String>>();
+				for(String cid:clusterResult.keySet())
+					candC.add(clusterResult.get(cid));
+				if(pageid.startsWith("Philosophy"))
+					cm = new ClusteringMetrics(this.gtClusterMap.get(pageid), candC, true);
+				else
+					cm = new ClusteringMetrics(this.gtClusterMap.get(pageid), candC, false);
+
+				rand = cm.getAdjRAND();
+				f1 = cm.fMeasure();
+				System.out.println("Adj RAND: "+rand);
+				System.out.println("F1: "+f1);
+				meanRand+=rand;
+				meanF1+=f1;
+				pageCount++;
 			}
+			meanRand = meanRand/pageCount;
+			meanF1 = meanF1/pageCount;
+			System.out.println("Mean Adj RAND: "+meanRand);
+			System.out.println("Mean F1: "+meanF1);
 			ois.close();
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block

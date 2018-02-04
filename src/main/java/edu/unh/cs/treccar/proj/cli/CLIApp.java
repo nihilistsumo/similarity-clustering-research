@@ -44,7 +44,7 @@ public class CLIApp {
 			funcList, Double.parseDouble(prop.getProperty("threshold")));
 			ProjectWorker pw = new ProjectWorker(data, prop);
 			pw.runClustering();
-			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getPageParasMap());
+			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getTruePageParasMap());
 			//pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
 			//RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
 			//rlb.printRankLibInputFile();

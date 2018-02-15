@@ -46,7 +46,7 @@ public class CLIApp {
 			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getTruePageParasMap());
 			//pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
 			//RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
-			//rlb.printRankLibInputFile();
+			//rlb.printRankLibInputFile(); 
 			pw.runClustering();
 		} catch(IOException e){
 			e.printStackTrace();

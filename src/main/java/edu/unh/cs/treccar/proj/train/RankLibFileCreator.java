@@ -53,7 +53,7 @@ public class RankLibFileCreator {
 		
 			for(String pageID:pageParaMap.keySet()){
 				ArrayList<ArrayList<String>> paraIDClusters = DataUtilities.getGTClusters(pageID, 
-						this.pr.getProperty("data-dir")+"/"+pr.getProperty("train-hier-qrels"));
+						this.pr.getProperty("data-dir")+"/"+pr.getProperty("train-qrels"));
 				ArrayList<String> paraIDList = pageParaMap.get(pageID);
 				ArrayList<Data.Paragraph> paraObjList = new ArrayList<Data.Paragraph>();
 				ArrayList<ParaPairData> scoresInPage = allScores.get(pageID);

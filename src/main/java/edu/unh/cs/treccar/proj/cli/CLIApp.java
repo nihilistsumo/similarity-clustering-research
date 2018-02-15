@@ -39,15 +39,15 @@ public class CLIApp {
 			prop.getProperty("data-dir")+"/"+prop.getProperty("train-outline"),
 			prop.getProperty("data-dir")+"/"+prop.getProperty("test-parafile"), prop.getProperty("data-dir")+"/"+prop.getProperty("test-outline"), 
 			prop.getProperty("data-dir")+"/"+prop.getProperty("train-art-qrels"),
-			prop.getProperty("data-dir")+"/"+prop.getProperty("train-hier-qrels"), prop.getProperty("data-dir")+"/"+prop.getProperty("test-art-qrels"),
-			prop.getProperty("data-dir")+"/"+prop.getProperty("test-hier-qrels"), prop.getProperty("out-dir")+"/"+prop.getProperty("data-file"),
+			prop.getProperty("data-dir")+"/"+prop.getProperty("train-qrels"), prop.getProperty("data-dir")+"/"+prop.getProperty("test-art-qrels"),
+			prop.getProperty("data-dir")+"/"+prop.getProperty("test-qrels"), prop.getProperty("out-dir")+"/"+prop.getProperty("data-file"),
 			funcList, Double.parseDouble(prop.getProperty("threshold")));
 			ProjectWorker pw = new ProjectWorker(data, prop);
-			pw.runClustering();
 			//HashMap<String, ArrayList<ParaPairData>> scoresMap = pw.processParaPairData(pw.getTruePageParasMap());
 			//pw.saveParaSimilarityData(scoresMap, data.getTrainScoreData());
 			//RankLibFileCreator rlb = new RankLibFileCreator(prop, funcList);
 			//rlb.printRankLibInputFile();
+			pw.runClustering();
 		} catch(IOException e){
 			e.printStackTrace();
 		}
